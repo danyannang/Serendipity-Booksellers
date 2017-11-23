@@ -35,7 +35,7 @@ int main() {
 		{
 			cout << "You have selected cashier.\n";
 			user = new Cashier;
-			user->cashierMenu(); //Calls the book module.
+			user->cashierMenu(); //Calls the cashier module.
 
 			delete user;
 			user = nullptr; //resets the pointer to be used in another module;
