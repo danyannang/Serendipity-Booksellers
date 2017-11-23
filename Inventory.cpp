@@ -1,4 +1,3 @@
-#define_CRT_SECURE_NO_WARNINGS
 #include "Inventory.h"
 
 InventoryModule::InventoryModule()
@@ -49,11 +48,11 @@ std::string InventoryModule::bookListing(std::string choice) //Should have a def
 
 
 	std::string bookChoice;
-	if (choice == "3")//If user wanted to edit a book's info, ask them which one, and send it ask the argument for the editBook method
+	if (choice == "3")//If user wanted to edit a book's info, ask them which one, and return it to use an an argument for the editBook method
 	{
 		std::cout << "Which book's info to edit? ";
 		std::cin >> bookChoice;
-		editBook(bookChoice);
+		return bookChoice; 
 	}
 }
 
@@ -124,20 +123,40 @@ void InventoryModule::initialInventory(std::string **bookData) //Should only be 
 	}
 
 	iniBooks.close();
-
+	return; 
 }
 
-void InventoryModule::addBook()//Adds the info for a new book at the end of the inventory
+void InventoryModule::addBook(std::string **bookData)//Adds the info for a new book at the end of the inventory(add condition if book equals exist to just add one to quantity)
+{
+	std::string newBook[8];
+}
+
+void InventoryModule::deleteBook(std::string **bookData)//Deletes all info for a particular book, deletes the space for it and shrinks array
 {
 
 }
 
-void InventoryModule::deleteBook()//Deletes all info for a particular book, deletes the space for it and shrinks array
+void InventoryModule::editBook(std::string **bookData, std::string bookChoice)//Allows user to change attribute of a particular book(add option for user to go back/cancel the change)
 {
+	std::cout << "What to edit:" << std::endl;
+	std::cout << "1. ISBN" << std::endl;
+	std::cout << "2. TITLE" << std::endl;
+	std::cout << "3. AUTHOR" << std::endl;
+	std::cout << "4. PUBLISHER" << std::endl;
+	std::cout << "5. ADD DATE" << std::endl;
+	std::cout << "6. WHOLESALE PRICE" << std::endl;
+	std::cout << "7. RETAIL PRICE" << std::endl;
+	std::cout << "8. QUANTITY" << std::endl;
 
-}
+	std::string toChange;
+	std::cin >> toChange;
 
-void InventoryModule::editBook(std::string bookChoice)//Allows user to change attribute of a particular book
-{
+	std::cout << "Current: " << bookData[stoi(bookChoice) - 1][stoi(toChange)-1];
 
-}
+	std::string changeTo;
+	std::cout << "Change to: ";
+	std::cin >> changeTo;
+
+	bookData[stoi(bookChoice) - 1][stoi(toChange) - 1] = changeTo; 
+	return; 
+} 
