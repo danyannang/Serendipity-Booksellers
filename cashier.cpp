@@ -77,7 +77,8 @@ void Cashier::setTotal(double x)
 }
 void Cashier::setSubTotal(int x)
 {
-	//total+=book[i][RETAIL]
+	//double temp = std::stod(book[x][RETAIL]) //string to double for retail value
+	//total+=temp;
 }
 void Cashier::setTaxRate()
 {
