@@ -6,8 +6,6 @@
 
 using namespace std;
 
-const double tax = 0.0875;
-
 struct book
 {
 	string isbn;
@@ -20,11 +18,11 @@ struct book
 
 int main() {
 	string choice;
-	Module *user = new Module;
+	Module *user = new Module; //Pointer to be used for menu interaction
 	delete user;
 	user = nullptr;
 
-	do {
+	do { //Main menu loop
 		cout << "--Serendipity Booksellers--\n";
 		cout << "         Main Menu\n";
 		cout << "1. Cashier Module\n";
@@ -37,9 +35,11 @@ int main() {
 		{
 			cout << "You have selected cashier.\n";
 			user = new Cashier;
+			user->cashierMenu(); //Calls the book module.
+
 			delete user;
-			user = nullptr;
-			cout << "Would you like to return to the main menu? (y/n): ";
+			user = nullptr; //resets the pointer to be used in another module;
+			cout << "Would you like to return to the main menu? (y/n): "; //Selection for returning to main menu or closig program.
 			getline(cin, choice);
 		}
 		else if (choice == "2")
