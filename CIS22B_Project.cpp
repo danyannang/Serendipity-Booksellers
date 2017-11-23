@@ -6,16 +6,6 @@
 
 using namespace std;
 
-struct book
-{
-	string isbn;
-	string date;
-	string title;
-	string author;
-	double bPrice;
-	double sPrice;
-};
-
 int main() {
 	string choice;
 	Module *user = new Module; //Pointer to be used for menu interaction
