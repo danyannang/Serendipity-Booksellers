@@ -1,3 +1,4 @@
+#define_CRT_SECURE_NO_WARNINGS
 #include "Inventory.h"
 
 InventoryModule::InventoryModule()
