@@ -58,21 +58,29 @@ std::string InventoryModule::bookListing(std::string choice) //Should have a def
 
 void InventoryModule::initialInventory(std::string **bookData) //Should only be ran once during first run of inventory module in a new initialization of program, a new file will be created after. This will create the 2d array of books.
 {
+	std::cout << "initialInventory" << std::endl;
 	std::string unsplit;
-	std::ofstream iniBooks;
+	std::ifstream iniBooks("BookStock.txt");
 
-	std::cout << "Text file for initial inventory?" << std::endl;
-	std::cin >> initialBooks; 
-	iniBooks.open(initialBooks);
+	//std::cout << "Text file for initial inventory?" << std::endl;
+	//std::cin >> initialBooks; 
+	//iniBooks.open("BookStock.txt");
 
-	while (iniBooks.good() == true)
+	//std::string bookString;
+	//std::getline(iniBooks, bookString, '\n');
+	if (iniBooks)
 	{
+		std::cout << "I'm open" << std::endl;
+	}
+
+	while (std::getline(iniBooks, unsplit, '\t'))
+	{
+		std::cout << "good";
 		bool exists = false;//To be set to true if the current book already exists in the data
 		int nthBook = 0;
 
 		for (int attr = 0; attr < 8; attr++)//Cycle through the attributes for the book, will just keep reading if exists == true
 		{
-			std::getline(std::cin, unsplit, ' ');
 			if (attr == 0)//If it's the first attribute of a book, check if one already exists in the system
 			{
 				for (int i = 0; i < 8; i++)
@@ -100,6 +108,7 @@ void InventoryModule::initialInventory(std::string **bookData) //Should only be 
 					bookData[nthBook][attr] = unsplit;
 				}
 			}
+			std::getline(iniBooks, unsplit, '\t');
 		}
 
 		nthBook++; 
@@ -136,7 +145,7 @@ void InventoryModule::deleteBook(std::string **bookData)//Deletes all info for a
 
 }
 
-void InventoryModule::editBook(std::string **bookData, std::string bookChoice)//Allows user to change attribute of a particular book(add option for user to go back/cancel the change)
+void InventoryModule::editBook(std::string **bookData, std::string bookChoice)//Allows user to change attribute of a particular book(add option for user to go back/cancel the change, go back to previous menu after making the change)
 {
 	std::cout << "What to edit:" << std::endl;
 	std::cout << "1. ISBN" << std::endl;
