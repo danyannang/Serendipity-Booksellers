@@ -11,61 +11,51 @@ Module::Module() //Add creation of book array.
 void Module::createBookArray()
 {
 	std::cout << "Creating array.\n";
-	std::string unsplit, tempstring;
+	std::string unsplit;
 	std::ifstream iniBooks;
 	iniBooks.open("BookStock.txt");
 	if (!iniBooks)
 		std::cout << "Error Opening file.\n";
-	bool exists = false;//To be set to true if the current book already exists in the data
 	int nthBook = 0;
-	for (int i = 0; i < 100; i++)
+	/*for (int i = 0; i < 100; i++) //primitive loop which creates the entire array, but no filter.
 	{
 		for (int j = 0; j < 7; j++)
 		{
 			std::getline(iniBooks, unsplit, '\t');
 			bookData[i][j] = unsplit;
 		}
-	}
-	iniBooks.close();
-	std::cout << bookData[10][RETAIL] << std::endl;
-	/*while (iniBooks)
+	}*/
+	//Loop for creating the array without multiple instances of same book.
+	for (int i = 0; i < 100; i++)
 	{
-		bool exists = false;//To be set to true if the current book already exists in the data
-		int nthBook = 0;	
-
-		for (int attr = 0; attr < 8; attr++)//Cycle through the attributes for the book, will just keep reading if exists == true
+		for (int j = 0; j < 7; j++)
 		{
+			bool exists = false;
 			std::getline(iniBooks, unsplit, '\t');
-			if (attr == 0)//If it's the first attribute of a book, check if one already exists in the system
+			if (j == 0) //isbn catcher.
 			{
-				for (int i = 0; i < 8; i++)
+				for (int k = 0; k < i; k++)
 				{
-					if (unsplit == bookData[i][1])//If the read in ISBN is the exact same as another, then increment the quantity attribute by one
+					if (bookData[k][j] == unsplit) //if any of the previous instances of book match the current one, increment quantity
 					{
-						int addOneTo = stoi(bookData[i][QUANTITY]);
-						bookData[i][QUANTITY] = std::to_string(addOneTo++);
 						exists = true;
+						//increment quantity
+					}
+					else if (exists == false) //if not continue storing data in the array
+					{
+						bookData[i][j] = unsplit;
+						//set quantity to one
 					}
 				}
-				if (exists == false)
-				{
-					bookData[nthBook][ISBN] = unsplit;
-				}
 			}
-			else if (exists == false)//If the index isn't ISBN and the book doesn't already exist in the system
+			else if (j != 0 && exists == false) //store the rest of the essential data into the same array if the isbn was not the same
 			{
-				if (attr == 7)//If the index is the quantity attribute and the book doesn't already exist in the system, initialize the quantity to 1
-				{
-					bookData[nthBook][QUANTITY] = 1;
-				}
-				else
-				{
-					bookData[nthBook][attr] = unsplit;
-				}
+				bookData[i][j] = unsplit;
 			}
 		}
-		iniBooks.close();
-	} */
+	}
+	iniBooks.close();
+	std::cout << bookData[2][ISBN] << std::endl;
 }
 void Module::cashierMenu()
 {
@@ -86,7 +76,7 @@ int Module::bookSearch() //(booklist[i][j]
 	bool found = false;
 	/*while (index < 100 && !found) //100 is fake size declarator for the array
 	{
-		if (booklist[index][ISBN] = isbn)
+		if (bookData[index][ISBN] = isbn)
 		{
 			found = true;
 			position = index;
