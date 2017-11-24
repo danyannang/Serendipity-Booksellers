@@ -1,4 +1,3 @@
-#define_CRT_SECURE_NO_WARNINGS
 #include "Inventory.h"
 
 using namespace std;
@@ -26,5 +25,9 @@ int main()
 		bookData[i] = new std::string[8];
 	}
 
+	InventoryModule inven; 
+	inven.initialInventory(bookData); 
+
+	system("Pause");
 	return 0;
 }
