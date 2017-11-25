@@ -26,32 +26,32 @@ void Module::createBookArray()
 		}
 	}*/
 	//Loop for creating the array without multiple instances of same book.
-	for (int i = 0; i < 100; i++)
+	for (int book = 0; book < 100; book++)
 	{
-		for (int j = 0; j < 7; j++)
+		bool exists = false;
+		for (int attr = 0; attr < 7; attr++)
 		{
-			bool exists = false;
 			std::getline(iniBooks, unsplit, '\t');
-			if (j == 0) //isbn catcher.
+			if (attr == 0) //isbn catcher.
 			{
-				for (int k = 0; k < i; k++)
+				for (int match = 0; match < book; match++)
 				{
-					if (bookData[k][j] == unsplit) //if any of the previous instances of book match the current one, increment quantity
+					if (bookData[match][attr] == unsplit) //if any of the previous instances of book match the current one, increment quantity
 					{
 						exists = true;
-						//increment quantity
-					}
-					else if (exists == false) //if not continue storing data in the array
-					{
-						bookData[i][j] = unsplit;
-						//set quantity to one
+						bookData[match][QUANTITY] += 1; 
+						break;
 					}
 				}
+				if (exists == false)
+				{
+					bookData[book][ISBN] = unsplit;
+				}
 			}
-			else if (j != 0 && exists == false) //store the rest of the essential data into the same array if the isbn was not the same
+			else if (exists == false) 
 			{
-				bookData[i][j] = unsplit;
-			}
+				bookData[book][attr] = unsplit;
+			}	
 		}
 	}
 	iniBooks.close();
