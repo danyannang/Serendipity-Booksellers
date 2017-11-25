@@ -25,7 +25,6 @@ public:
 	~Cashier() { std::cout << "This is a flag to show a cashier has been destroyed\n";  }
 	void cashierMenu();
 	void setTotal(double);
-	void setTaxRate();
 	void setSubTotal(int);
 };
 class Inventory : public::Module
