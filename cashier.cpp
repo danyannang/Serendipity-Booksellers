@@ -52,6 +52,10 @@ void Module::createBookArray()
 			{
 				bookData[book][attr] = unsplit;
 			}	
+			if ((exists == false) && (attr == 6))
+			{
+				bookData[book][QUANTITY] = 1;
+			}
 		}
 	}
 	iniBooks.close();
