@@ -17,16 +17,16 @@ void Module::createBookArray()
 	if (!iniBooks)
 		std::cout << "Error Opening file.\n";
 	int nthBook = 0;
-	/*for (int i = 0; i < 100; i++) //primitive loop which creates the entire array, but no filter.
+	for (int i = 0; i < 100; i++) //primitive loop which creates the entire array, but no filter.
 	{
 		for (int j = 0; j < 7; j++)
 		{
 			std::getline(iniBooks, unsplit, '\t');
 			bookData[i][j] = unsplit;
 		}
-	}*/
+	}
 	//Loop for creating the array without multiple instances of same book.
-	for (int i = 0; i < 100; i++)
+	/*for (int i = 0; i < 100; i++)
 	{
 		for (int j = 0; j < 7; j++)
 		{
@@ -53,9 +53,9 @@ void Module::createBookArray()
 				bookData[i][j] = unsplit;
 			}
 		}
-	}
+	}*/
 	iniBooks.close();
-	std::cout << bookData[2][ISBN] << std::endl;
+	std::cout << bookData[0][ISBN] << std::endl;
 }
 void Module::cashierMenu()
 {
@@ -69,22 +69,21 @@ int Module::bookSearch() //(booklist[i][j]
 {
 	std::string isbn;
 	std::cout << "Enter the isbn of the book you are searching: ";
-	std::cin >> isbn;
+	std::getline(std::cin, isbn);
 	//linear search to find isbn;
 	int index = 0;
 	int position = -1;
 	bool found = false;
-	/*while (index < 100 && !found) //100 is fake size declarator for the array
+	while (index < 100 && !found) //100 is fake size declarator for the array
 	{
-		if (bookData[index][ISBN] = isbn)
+		if (bookData[index][ISBN] == isbn)
 		{
 			found = true;
 			position = index;
-			break;
 			return position;
 		}
 		index++;
-	}*/
+	}
 
 	return position;
 }
@@ -94,14 +93,15 @@ Cashier::Cashier()
 	total = 0;
 	subtotal = 0;
 	tax = 0;
+	taxRate = .0875;
 }
 void Cashier::cashierMenu()
 {
-	int arrayposition = -1;
+	int arrayposition;
 	std::string choice;
 	std::cout << "Serendipity BookSellers\n";
 	std::cout << "Date: " << std::endl;
-	std::cout << "Qty    ISBN        Title      Price           Total\n";
+	std::cout << "Qty\tISBN\tTitle\t\tPrice\tTotal\n" << std::endl << std::endl << std::endl;
 	do {
 		std::cout << "Add a book? (y/n): ";
 		std::getline (std::cin, choice);
@@ -110,8 +110,23 @@ void Cashier::cashierMenu()
 			arrayposition = bookSearch();//booklist[i][j]);
 			if (arrayposition != -1)//output line for the added book
 			{
+				std::string tempstring;
+				int count;
 				setSubTotal(arrayposition);//Adds to total
-				//std::cout << book[arrayposition][QUANTITY] << " " << book[arrayposition][ISBN] << " " << book[arrayposition][TITLE] << " $" << book[arrayposition][RETAIL] << " $" << subtotal;
+				if (bookData[arrayposition][QUANTITY] != "0")
+				{
+					std::cout << "Qty\tISBN\tTitle\t\t\t\t\tPrice\tTotal\n" << std::endl;
+					std::cout << bookData[arrayposition][QUANTITY] << " " << bookData[arrayposition][ISBN] << " " << bookData[arrayposition][TITLE] << " $" << bookData[arrayposition][RETAIL] << " $" << subtotal << std::endl;
+					tempstring = bookData[arrayposition][QUANTITY];
+					/*count = std::stoi(tempstring);
+					count -= 1;
+					tempstring = std::to_string(count);
+					bookData[arrayposition][QUANTITY] = tempstring;*/
+				}
+				else if (bookData[arrayposition][QUANTITY] == "0")
+				{
+					std::cout << "That book is out of stock.\n";
+				}
 			}
 			else if (arrayposition == -1)
 				std::cout << "Book not found.\n";
@@ -130,12 +145,8 @@ void Cashier::setTotal(double x)
 }
 void Cashier::setSubTotal(int x)
 {
-	//double temp = std::stod(book[x][RETAIL])
-	//total+=temp;
-}
-void Cashier::setTaxRate()
-{
-	taxRate = .0875;
+	double temp = std::stod(bookData[x][RETAIL]);
+	subtotal += temp;
 }
 Inventory::Inventory()
 {
