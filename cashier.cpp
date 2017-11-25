@@ -13,49 +13,19 @@ void Module::createBookArray()
 	std::cout << "Creating array.\n";
 	std::string unsplit;
 	std::ifstream iniBooks;
-	iniBooks.open("BookStock.txt");
+	iniBooks.open("booklist.txt");
 	if (!iniBooks)
 		std::cout << "Error Opening file.\n";
 	int nthBook = 0;
-	for (int i = 0; i < 100; i++) //primitive loop which creates the entire array, but no filter.
+	for (int i = 0; i < 25; i++) //primitive loop which creates the entire array, but no filter.
 	{
-		for (int j = 0; j < 7; j++)
+		for (int j = 0; j < 8; j++)
 		{
 			std::getline(iniBooks, unsplit, '\t');
 			bookData[i][j] = unsplit;
 		}
 	}
-	//Loop for creating the array without multiple instances of same book.
-	/*for (int i = 0; i < 100; i++)
-	{
-		for (int j = 0; j < 7; j++)
-		{
-			bool exists = false;
-			std::getline(iniBooks, unsplit, '\t');
-			if (j == 0) //isbn catcher.
-			{
-				for (int k = 0; k < i; k++)
-				{
-					if (bookData[k][j] == unsplit) //if any of the previous instances of book match the current one, increment quantity
-					{
-						exists = true;
-						//increment quantity
-					}
-					else if (exists == false) //if not continue storing data in the array
-					{
-						bookData[i][j] = unsplit;
-						//set quantity to one
-					}
-				}
-			}
-			else if (j != 0 && exists == false) //store the rest of the essential data into the same array if the isbn was not the same
-			{
-				bookData[i][j] = unsplit;
-			}
-		}
-	}*/
 	iniBooks.close();
-	std::cout << bookData[0][ISBN] << std::endl;
 }
 void Module::cashierMenu()
 {
