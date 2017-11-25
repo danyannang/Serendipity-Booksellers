@@ -1,6 +1,6 @@
 1133947204	Precalculus With Limits (3rd Edition)	Ron Larson	Cengage Learning	11/21/2017	149.99	200.50	4	
 128546236x	Essentials of Meteorology: An Invitation to the Atmosphere	C. Donald Ahrens	Cengage Learning	11/21/2017	49.99	55.00	5	
-0134498372	Starting out with C++ from Control Structures to Objects (9th Edition)	Tony Gaddis Pearson	11/21/2017	100.00	134.99	3	
+0134498372	Starting out with C++ from Control Structures to Objects (9th Edition)	Tony Gaddis	Pearson	11/21/2017	100.00	134.99	3	
 1285664779	Calculus: Early Trancendental Functions (6th Edition)	Ron Larson	Brooks Cole	11/21/2017	74.99	100.25	2	
 1305084764	Engineering Fundamentals: An Introduction to Engineering	Saeed Moaveni	CL Engineering	11/21/2017	113.00	125.00	5	
 0470587113	Chemistry: Structure and Dynamics (5th Edition)	James N. Spencer	Wiley	11/21/2017	73.75	95.60	3	
@@ -14,7 +14,7 @@
 0133957055	Starting Out with Java: From Control Structures through Objects (6th Edition)	Tony Gaddis	Pearson	11/21/2017	37.63	130.10	4	
 1423901320	Simple Program Design, A Step-by-Step Approach, (5th Edition)	Lesley Anne Robertson	Course Technology	11/21/2017	47.95	89.00	5	
 0077862597	M: Management (4th Edition)	Thomas S Bateman	McGraw-Hill Education	11/21/2017	26.46	106.67	6	
-0134004000	Business Law (9th Edition)	Henry R. Cheeseman Pearson	11/21/2017	51.11	190.25	3	
+0134004000	Business Law (9th Edition)	Henry R. Cheeseman	Pearson	11/21/2017	51.11	190.25	3	
 1118743202	Intermediate Accounting (16th Edition)	Donald E. Kieso	Wiley	11/21/2017	213.88	299.34	6	
 0134475585	Horngren's Cost Accounting: A Managerial Emphasis (16th Edition)	Srika M. Datar	Pearson	11/21/2017	179.53	273.55	7	
 0134444329	Starting Out with Python (4th Edition)	Tony Gaddis	Pearson	11/21/2017	109.40	115.48	4	
