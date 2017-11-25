@@ -3,6 +3,7 @@
 #include <string>
 
 class Module {
+protected:
 	std::string bookData[100][8];
 public:
 	Module();
