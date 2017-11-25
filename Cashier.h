@@ -4,7 +4,7 @@
 
 class Module {
 protected:
-	std::string bookData[100][8];
+	std::string bookData[25][8];
 public:
 	Module();
 	virtual ~Module() { std::cout << "This is a flag to show module has been destroyed\n";  }
