@@ -5,19 +5,10 @@
 
 using namespace std;
 
-struct book
-{
-	string isbn;
-	string date;
-	string title;
-	string author;
-	double bPrice;
-	double sPrice;
-};
-
 int main() {
 	string choice;
 	Module *user = new Module; //Pointer to be used for menu interaction
+	user->createBookArray();
 	delete user;
 	user = nullptr;
 
@@ -34,6 +25,7 @@ int main() {
 		{
 			cout << "You have selected cashier.\n";
 			user = new Cashier;
+			user->createBookArray(); //removelater once book array is dynamically allocated.
 			user->cashierMenu(); //Calls the book module.
 
 			delete user;
