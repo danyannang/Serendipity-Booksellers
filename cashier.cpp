@@ -37,6 +37,8 @@ void Module::inventoryMenu()
 }
 int Module::bookSearch() //(booklist[i][j]
 {
+	int Module::bookSearch() //(booklist[i][j]
+{
 	std::string isbn;
 	std::cout << "Enter the isbn of the book you are searching: ";
 	std::getline(std::cin, isbn);
@@ -44,18 +46,18 @@ int Module::bookSearch() //(booklist[i][j]
 	int index = 0;
 	int position = -1;
 	bool found = false;
-	while (index < 100 && !found) //100 is fake size declarator for the array
+	while (index < 25 && !found) //100 is fake size declarator for the array
 	{
 		if (bookData[index][ISBN] == isbn)
 		{
 			found = true;
 			position = index;
-			return position;
 		}
-		index++;
+		++index;
 	}
 
 	return position;
+}
 }
 Cashier::Cashier()
 {
