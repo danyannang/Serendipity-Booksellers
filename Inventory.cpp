@@ -44,7 +44,7 @@ std::string InventoryModule::bookListing(std::string choice) //Should have a def
 	std::cout << "#" << "ISBN" << "TITLE" << "AUTHOR" << "PUBLISHER" << "ADD_DATE" << "WHOLESALE_PRICE" << "RETAIL_PRICE" << "QUANTITY" << std::endl;
 
 	//Print out contents of array created by initialInventory, perhaps changed by other methods
-
+	for (int i = 0; i < sizeof(bookData)
 
 
 	std::string bookChoice;
@@ -167,12 +167,33 @@ void InventoryModule::addBook(std::string **bookData)//Adds the info for a new b
 	std::cin >> newBook[QUANTITY];
 	
 	//If book exists, just add quantity to existing
-	
-	else
+	bool exists = false;
+	int foundIndex; 
+	for (int i = 0; i < sizeof(bookData); i++)
+	{
+		if (newBook[ISBN] = bookData[i][ISBN])
+		{
+			foundIndex = i;
+			exists = true;
+			break;
+		}
+	}
+	if (exists == true)
+	{
+		bookData[foundIndex][QUANTITY] += 1; 
+	}
+	else//Read in the book data, expand size of array 
 	{
 		int insertAt = sizeof(bookData) - 1;
-	
+		int newSize = sizeof(bookData) + 1; 
+		
+		for (int i = 0; i < 8; i++)
+		{
+			bookData[sizeof(bookData-1)][i] = newBook[i];
+		}
+		
 		std::string **nBookData = new std::string*[newSize];
+		
 		for (int i = 0; i < newSize; i++)
 		{
 			nBookData[i] = new std::string[8];
@@ -196,7 +217,31 @@ void InventoryModule::deleteBook(std::string **bookData)//Deletes all info for a
 	std::cout << "Which # book to remove?" << endl;
 	std::cin >> toDelete;
 	
-	int newSize = sizeof(bookData);
+	int newSize = sizeof(bookData) - 1;
+		
+	for (int i = 0; i < 8; i++)
+	{
+		bookData[sizeof(bookData-1)][i] = newBook[i];
+	}
+		
+	std::string **nBookData = new std::string*[newSize];
+	for (int i = 0; i < newSize; i++)
+	{
+		nBookData[i] = new std::string[8];
+	}
+	
+	for (int i = 0; i < newSize--; i++)
+	{
+		if(i != toDelete)
+		{
+			for (int j = 0; i < 8; j++)
+			{
+				nBookData[i][j] = bookData[i][j];
+			}
+		}
+	}
+	delete[] bookData;
+	bookData = nBookData;
 	
 }
 
