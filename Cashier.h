@@ -20,6 +20,7 @@ class Cashier : public::Module
 	double subtotal;
 	double taxRate;
 	double tax;
+	std::string checkoutBooks[25][8];
 public:
 	Cashier();
 	~Cashier() { std::cout << "This is a flag to show a cashier has been destroyed\n";  }
