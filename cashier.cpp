@@ -37,8 +37,6 @@ void Module::inventoryMenu()
 }
 int Module::bookSearch() //(booklist[i][j]
 {
-	int Module::bookSearch() //(booklist[i][j]
-{
 	std::string isbn;
 	std::cout << "Enter the isbn of the book you are searching: ";
 	std::getline(std::cin, isbn);
@@ -53,11 +51,9 @@ int Module::bookSearch() //(booklist[i][j]
 			found = true;
 			position = index;
 		}
-		++index;
+		index++;
 	}
-
 	return position;
-}
 }
 Cashier::Cashier()
 {
@@ -67,13 +63,13 @@ Cashier::Cashier()
 	tax = 0;
 	taxRate = .0875;
 }
-void Cashier::cashierMenu()
+void Cashier::cashierMenu() //note for outpitting things neatly books neatly. store books in array.
 {
 	int arrayposition;
+	int purchasenumber = 0;
 	std::string choice;
 	std::cout << "Serendipity BookSellers\n";
 	std::cout << "Date: " << std::endl;
-	std::cout << "Qty\tISBN\tTitle\t\tPrice\tTotal\n" << std::endl << std::endl << std::endl;
 	do {
 		std::cout << "Add a book? (y/n): ";
 		std::getline (std::cin, choice);
@@ -87,13 +83,18 @@ void Cashier::cashierMenu()
 				setSubTotal(arrayposition);//Adds to total
 				if (bookData[arrayposition][QUANTITY] != "0")
 				{
-					std::cout << "Qty\tISBN\tTitle\t\t\t\t\tPrice\tTotal\n" << std::endl;
-					std::cout << bookData[arrayposition][QUANTITY] << " " << bookData[arrayposition][ISBN] << " " << bookData[arrayposition][TITLE] << " $" << bookData[arrayposition][RETAIL] << " $" << subtotal << std::endl;
+					std::cout << "Qty\tISBN\t\tTitle\t\t\t\t\tPrice\tTotal\n" << std::endl;
+					std::cout << bookData[arrayposition][QUANTITY] << "\t" << bookData[arrayposition][ISBN] << " " << bookData[arrayposition][TITLE] << " \t$" << bookData[arrayposition][RETAIL] << " $" << subtotal << std::endl;
+					for (int j = 0; j < 8; j++) //stores all the purchased books in a new array.
+					{
+						checkoutBooks[purchasenumber][j] = bookData[arrayposition][j];
+					}
+					purchasenumber++;
 					tempstring = bookData[arrayposition][QUANTITY];
-					/*count = std::stoi(tempstring);
+					count = std::stoi(tempstring);
 					count -= 1;
 					tempstring = std::to_string(count);
-					bookData[arrayposition][QUANTITY] = tempstring;*/
+					bookData[arrayposition][QUANTITY] = tempstring;
 				}
 				else if (bookData[arrayposition][QUANTITY] == "0")
 				{
@@ -104,7 +105,11 @@ void Cashier::cashierMenu()
 				std::cout << "Book not found.\n";
 		}
 	} while (arrayposition = -1 && choice == "y" || choice == "Y");
-
+	std::cout << "Qty\tISBN\t\tTitle\t\t\t\t\tPrice\n" << std::endl;
+	for (int i = 0; i < purchasenumber; i++)
+	{
+		std::cout << checkoutBooks[i][QUANTITY] << "\t" << checkoutBooks[i][ISBN] << " " <<checkoutBooks[i][TITLE] << " \t$" << checkoutBooks[i][RETAIL] << std::endl;
+	}
 	setTotal(subtotal);
 	std::cout << "\tSubtotal: " << std::setw(4) << "$" << std::setprecision(2) << subtotal << std::endl;
 	std::cout << "\tTax: " << std::setw(9) << "$" << std::setprecision(2) << tax << std::endl;
