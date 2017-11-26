@@ -151,11 +151,53 @@ void InventoryModule::addBook(std::string **bookData)//Adds the info for a new b
 	std::cout << "Enter info for new book: " << endl;
 	std::cout << "ISBN: "; 
 	std::cin >> newBook[ISBN]; 
+	std::cout << "TITLE: ";
+	std::cin >> newBook[TITLE];
+	std::cout << "AUTHOR ";
+	std::cin >> newBook[AUTHOR];
+	std::cout "PUBLISHER: ";
+	std::cin >> newBook[PUBLISHER];
+	std::cout >> "DATE: ";
+	std::cin >> newBook[DATE];
+	std::cout >> "WHOLESALE: ";
+	std::cin >> newBook[WHOLESALE];
+	std::cout >> "RETAIL: ";
+	std::cin >> newBook[RETAIL];
+	std::cout >> "QUANTITY: ";
+	std::cin >> newBook[QUANTITY];
+	
+	//If book exists, just add quantity to existing
+	
+	else
+	{
+		int insertAt = sizeof(bookData) - 1;
+	
+		std::string **nBookData = new std::string*[newSize];
+		for (int i = 0; i < newSize; i++)
+		{
+			nBookData[i] = new std::string[8];
+		}
+		for (int i = 0; i < newSize--; i++)
+		{
+			for (int j = 0; i < 8; j++)
+			{
+				nBookData[i][j] = bookData[i][j];
+			}
+		}
+		delete[] bookData;
+		bookData = nBookData;
+	}
+		
 }
 
 void InventoryModule::deleteBook(std::string **bookData)//Deletes all info for a particular book, deletes the space for it and shrinks array
 {
-
+	int toDelete;
+	std::cout << "Which # book to remove?" << endl;
+	std::cin >> toDelete;
+	
+	int newSize = sizeof(bookData);
+	
 }
 
 void InventoryModule::editBook(std::string **bookData, std::string bookChoice)//Allows user to change attribute of a particular book(add option for user to go back/cancel the change, go back to previous menu after making the change)
