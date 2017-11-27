@@ -174,7 +174,7 @@ void quantitylist()
 	for (int i = 0; i < 9; i++)
 	{
 		itemp[i][0] = i;
-		itemp[i][1] = stoi(sample[i][6], nullptr);
+		itemp[i][1] = stoi(sample[i][5], nullptr);
 	}
 	for (int k = 0; k < 9; k++)
 	{
@@ -231,7 +231,7 @@ void wholeCostList()
 	for (int i = 0; i < 9; i++)
 	{
 		itemp[i][0] = i;
-		itemp[i][1] = stod(sample[i][5], nullptr);
+		itemp[i][1] = stod(sample[i][6], nullptr);
 	}
 	for (int k = 0; k < 9; k++)
 	{
