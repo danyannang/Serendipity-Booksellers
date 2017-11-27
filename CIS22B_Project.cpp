@@ -1,4 +1,3 @@
-#define_CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -9,6 +8,7 @@ using namespace std;
 int main() {
 	string choice;
 	Module *user = new Module; //Pointer to be used for menu interaction
+	//user->createBookArray();
 	delete user;
 	user = nullptr;
 
@@ -25,7 +25,8 @@ int main() {
 		{
 			cout << "You have selected cashier.\n";
 			user = new Cashier;
-			user->cashierMenu(); //Calls the cashier module.
+			user->createBookArray(); //removelater once book array is dynamically allocated.
+			user->cashierMenu(); //Calls the book module.
 
 			delete user;
 			user = nullptr; //resets the pointer to be used in another module;
@@ -40,7 +41,13 @@ int main() {
 		}
 		else if (choice == "3")
 		{
-			//run report Module
+			cout << "You have selected report.\n";//
+			user = new Report;
+			user->createBookArray();
+			user->reportMenu();
+
+			delete user;
+			user = nullptr;
 			cout << "Would you like to return to the main menu? (y/n): ";
 			getline(cin, choice);
 		}
