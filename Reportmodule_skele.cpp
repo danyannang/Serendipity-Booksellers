@@ -10,8 +10,9 @@ void retailVal();
 void quantitylist();
 void wholeCostList();
 void dateList();
-
-string sample[8][8] = {};	// IM ONLY USEING THIS AS A GLOBAL VARIABLE TO SIMULATE THE IDEA THAT IT IS A ARRAY FROM A FATHER CLASS BEING USED BY A CHILD CLASS
+void swapV(double *x, double *y);
+//void swapV(int x, int y);
+string sample[9][8] = {};	// IM ONLY USEING THIS AS A GLOBAL VARIABLE TO SIMULATE THE IDEA THAT IT IS A ARRAY FROM A FATHER CLASS BEING USED BY A CHILD CLASS
 
 
 
@@ -71,7 +72,7 @@ int main()
 	}
 	cout << endl;
 	sample[0][7] = " 10.05";
-	cout << sample[2][0];
+	cout << sample[0][7];
 	for (int i = 0; i < 9; i++)
 	{
 		sample[i][7] = " 11.25";		//retail cose
@@ -81,13 +82,11 @@ int main()
 	cout << endl;
 
 	// ALL THE PRIEVIOUS PART OF MAIN IS TO SIMULATE A SAMPLE ARRAY
-
-	quantitylist();
-
+	wholeCostList();
 	//order: ISBN, TITLE, AUTHOR, PUBLISHER, DATE, QUANTITY, WHOLESALECOST, RETAIL PRICE
 	cout << endl;
 	system("pause");
-
+	
 	return 0;
 }
 
@@ -150,36 +149,71 @@ void retailVal()
 	}
 	cout << "total retail cost: " << total << " $"<<endl;
 }
+
+void swapV(int *x, int *y)
+{
+	int temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+void swapV(double *x, double *y)
+{
+	double temp = *x;
+	*x = *y;
+	*y = temp;
+}
 void quantitylist()
 {
+	cout << setw(10) << "ISBN" << setw(30) << "TITLE" << setw(15) << "AUTHOR" << setw(15) << "PUBLISHER" << setw(15) << "DATE" << setw(5) << "#" << setw(15) << "WHOLESALECOST" << setw(15) << "RETAIL PRICE" << endl;
 	int itemp[9][2] = {};
 	int swap1=0;
 	int swap2=0;
+
+
 	for (int i = 0; i < 9; i++)
 	{
 		itemp[i][0] = i;
-		itemp[i][1] = stoi(sample[i][5], nullptr);
+		itemp[i][1] = stoi(sample[i][6], nullptr);
 	}
 	for (int k = 0; k < 9; k++)
 	{
-		swap1 = itemp[k][0];
-		swap2 = itemp[k][1];
+		
 		for (int i = 0; i < 9; i++)
 		{
-			if (itemp[i][1] > swap2)
+			
+			if (itemp[i][1] > itemp[k][1])
 			{
-				itemp[k][1] = itemp[i][1];
-				itemp[i][1] = swap2;
-				itemp[k][0] = itemp[i][0];
-				itemp[i][1] = swap1;
+				swapV(&itemp[i][1], &itemp[k][1]);
+				swapV(&itemp[k][0],&itemp[i][0]);
+				k = i;
 			}
 		}
+		
+	}
+
+	for (int i=0; i<9;i++)
+	{
 		for (int y = 0; y < 8; y++)
 		{
-			cout << sample[k][y];
-			if (y == 7)
+			switch (y)
 			{
-				cout << endl;
+			case 0:cout << setw(10) << sample[itemp[i][0]][y];
+				break;
+			case 1:cout << setw(30) << sample[itemp[i][0]][y];
+				break;
+			case 2:cout << setw(15) << sample[itemp[i][0]][y];
+				break;
+			case 3:cout << setw(15) << sample[itemp[i][0]][y];
+				break;
+			case 4:cout << setw(15) << sample[itemp[i][0]][y];
+				break;
+			case 5:cout << setw(5) << sample[itemp[i][0]][y];
+				break;
+			case 6:cout << setw(15) << sample[itemp[i][0]][y];
+				break;
+			case 7:cout << setw(15) << sample[itemp[i][0]][y] << endl;
+				break;
 			}
 		}
 	}
@@ -187,9 +221,66 @@ void quantitylist()
 }
 void wholeCostList()
 {
+	cout << setw(10) << "ISBN" << setw(30) << "TITLE" << setw(15) << "AUTHOR" << setw(15) << "PUBLISHER" << setw(15) << "DATE" << setw(5) << "#" << setw(15) << "WHOLESALECOST" << setw(15) << "RETAIL PRICE" << endl;
+	double itemp[9][2] = {};
+	int swap1 = 0;
+	int swap2 = 0;
+
+	
+
+	for (int i = 0; i < 9; i++)
+	{
+		itemp[i][0] = i;
+		itemp[i][1] = stod(sample[i][5], nullptr);
+	}
+	for (int k = 0; k < 9; k++)
+	{
+
+		for (int i = 0; i < 9; i++)
+		{
+
+			if (itemp[i][1] > itemp[k][1])
+			{
+				
+				swapV(&itemp[i][1], &itemp[k][1]);
+	
+				swapV(&itemp[k][0], &itemp[i][0]);
+				k = i;
+			}
+		}
+
+	}
+
+	for (int i = 0; i<9; i++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			int x = itemp[i][0];
+			switch (y)
+			{
+			case 0:cout << setw(10) << sample[x][y];
+				break;
+			case 1:cout << setw(30) << sample[x][y];
+				break;
+			case 2:cout << setw(15) << sample[x][y];
+				break;
+			case 3:cout << setw(15) << sample[x][y];
+				break;
+			case 4:cout << setw(15) << sample[x][y];
+				break;
+			case 5:cout << setw(5) << sample[x][y];
+				break;
+			case 6:cout << setw(15) << sample[x][y];
+				break;
+			case 7:cout << setw(15) << sample[x][y] << endl;
+				break;
+			}
+		}
+	}
 
 }
 void dateList()
 {
 
 }
+
