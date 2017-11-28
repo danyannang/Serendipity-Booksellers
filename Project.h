@@ -4,13 +4,16 @@
 
 class Module {
 protected:
-	std::string bookData[25][8];
+	std::string **bookData;
+	int invenSize;
+	int newSize;
 public:
 	Module();
 	virtual ~Module() { std::cout << "This is a flag to show module has been destroyed\n";  }
 	enum field { INDEX, ISBN = 0, TITLE, AUTHOR, PUBLISHER, DATE, WHOLESALE, RETAIL, QUANTITY };
 	void createBookArray();
 	int bookSearch(); //(booklist [i][j]
+	void deleteBookData();
 	virtual void cashierMenu();
 	virtual void inventoryMenu();
 	virtual void reportMenu();
@@ -32,15 +35,15 @@ public:
 class Inventory : public::Module
 {
 	friend class Report;
+	std::string initialbooks;
 public:
 	Inventory();
 	~Inventory() { std::cout << "This is a flag to show an Inventory has been destroyed.\n"; }
 	void inventoryMenu();
-	//std::string bookListing(std::string choice);
-	//void addBook(std::string **bookData);
-	//void deleteBook(std::string **bookData);
-	//void editBook(std::string **bookData, std::string bookChoice);
-	//void initialInventory(std::string **bookData);
+	std::string bookListing(std::string);
+	void addBook();
+	void deleteBook();
+	void editBook(std::string bookChoice);
 };
 class Report : public::Module
 {
