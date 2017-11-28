@@ -188,7 +188,7 @@ void Report::reportMenu()
 			dateList();
 		if (choice != "7")
 		{
-			std::cout << "Would you like to select another invnetory function? (y/n): ";
+			std::cout << "Would you like to select another inventory function? (y/n): ";
 			std::getline(std::cin, choice);
 		}
 	} while (choice != "7" || choice == "Y" || choice == "y");
@@ -206,79 +206,28 @@ void Report::invenList()
 			{
 
 			case 0:
-				std::cout << std::setw(10) << bookData[i][k] << std::endl;
+				std::cout << std::fixed << std::left << std::setw(12) << bookData[i][k];
 				break;
 			case 1:
-				std::cout << std::setw(30) << bookData[i][k] << std::endl;
+				std::cout << std::fixed << std::left << std::setw(30) << bookData[i][k];
 				break;
 			case 2:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
+				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
 				break;
 			case 3:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
+				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
 				break;
 			case 4:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
+				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
 				break;
 			case 5:
-				std::cout << std::setw(5) << bookData[i][k] << std::endl;
+				std::cout << std::fixed << std::left << std::setw(5) << bookData[i][k];
 				break;
 			case 6:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
+				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
 				break;
 			case 7:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 8:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 9:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 10:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 11:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 12:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 13:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 14:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 15:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 16:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 17:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 18:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 19:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 20:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 21:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 22:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 23:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
-				break;
-			case 24:
-				std::cout << std::setw(15) << bookData[i][k] << std::endl;
+				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
 				break;
 			}
 		}
@@ -289,27 +238,27 @@ void Report::wholesaleVal()
 {
 	std::cout << std::endl;
 	double  total = 0.0;
-	std::cout << "Whole Sale Listing: ";
+	std::cout << "***WHOLESALE COSTS*** " << std::endl << std::endl;
 	for (int i = 0; i < 25; i++)
 	{
-		std::cout << bookData[i][5] << " $" << std::endl;
+		std::cout << std::left << std::setw(80) << bookData[i][1] + ": " << std::setw(6) << "$" + bookData[i][5] << std::endl;
 		double isample = std::stod(bookData[i][5]);
 		total += isample;
 	}
-	std::cout << "total wholesale cost: " << total << " $" << std::endl;
+	std::cout << std::endl << "TOTAL WHOLESALE COST: " << total << " $" << std::endl << std::endl;
 }
 void Report::retailVal()
 {
 	std::cout << std::endl;
 	double  total = 0.0;
-	std::cout << "Retail Listing: ";
+	std::cout << "***RETAIL COSTS***" << std::endl << std::endl;
 	for (int i = 0; i < 25; i++)
 	{
-		std::cout << bookData[i][6] << " $" << std::endl;
+		std::cout << std::left << std::setw(80) << bookData[i][1] + ": " << std::setw(6) << "$" + bookData[i][6] << std::endl;
 		double isample = std::stod(bookData[i][6]);
 		total += isample;
 	}
-	std::cout << "total retail cost: " << total << " $" << std::endl;
+	std::cout << std::endl << "TOTAL RETAIL COST: " << "$" << total << std::endl << std::endl;
 }
 void Report::swapV(double *x, double *y) //Need to check and update
 {
@@ -379,57 +328,6 @@ void Report::quantitylist()//need to check and update
 				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
 				break;
 			case 7:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 8:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 9:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 10:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 11:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 12:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 13:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 14:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 15:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 16:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 17:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 18:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 19:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 20:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 21:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 22:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 23:
-				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
-				break;
-			case 24:
 				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
 				break;
 			}
