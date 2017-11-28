@@ -23,14 +23,6 @@ void Module::createBookArray()
 	iniBooks.open("booklist.txt");
 	if (!iniBooks)
 		std::cout << "Error Opening file.\n";
-	/*for (int i = 0; i < 25; i++) //primitive loop which creates the entire array, but no filter.
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			std::getline(iniBooks, unsplit, '\t');
-			bookData[i][j] = unsplit;
-		}
-	}*/
 	int nthBook = 0;
 	while (std::getline(iniBooks, unsplit, '\t'))
 	{
@@ -93,12 +85,7 @@ void Module::createBookArray()
 			}
 			delete[] bookData;
 			bookData = nBookData;
-
-			/*for (int i = 0; i < newSize; i++)
-			{
-				delete[] nBookData[i];
-			}
-			delete[] nBookData;*/
+			nBookData = nullptr;
 
 			nthBook += 1;
 			invenSize += 1;
@@ -227,52 +214,56 @@ Inventory::Inventory() //changed all invensizes in code to just be size of base 
 }
 void Inventory::inventoryMenu()
 {
-	std::cout << "1. Add a book" << std::endl;
-	std::cout << "2. Delete a book" << std::endl;
-	std::cout << "3. Edit book info" << std::endl;
-	std::cout << "4. Back to Module menu" << std::endl;
-
 	std::string choice;
-	std::cin >> choice;
-	if (choice == "1")
-	{
-		addBook();
-	}
-	else if (choice == "2")
-	{
-		deleteBook();
-	}
-	else if (choice == "3")
-	{
-		std::string bookchoice;
-		bookchoice = bookListing(choice);
-		if (bookchoice != "Q") // Why q?
+	do {
+		std::cout << "1. Add a book" << std::endl;
+		std::cout << "2. Delete a book" << std::endl;
+		std::cout << "3. Edit book info" << std::endl;
+		std::cout << "4. Back to Module menu" << std::endl;
+		std::cout << "Enter choice: ";
+		std::getline(std::cin, choice);
+		if (choice == "1")
 		{
-			editBook(bookchoice);
+			addBook();
 		}
-	}
+		else if (choice == "2")
+		{
+			deleteBook();
+		}
+		else if (choice == "3")
+		{
+			std::string bookchoice;
+			bookchoice = bookListing(choice);
+			if (bookchoice != "Q") // Why q?
+			{
+				editBook(bookchoice);
+			}
+		}
+		std::cout << "Return to the inventory menu? (y/n): ";
+		std::getline(std::cin, choice);
+	} while (choice == "y" || choice == "Y" || choice != "4");
 	deleteBookData();
 }
 void Inventory::addBook() //fix nBookdata
 {
-	/*std::string newBook[8];
+	std::string newBook[8];
 	std::cout << "Enter info for new book: " << std::endl;
 	std::cout << "ISBN: ";
-	std::cin >> newBook[ISBN];
+	std::getline(std::cin, newBook[ISBN]);
 	std::cout << "TITLE: ";
-	std::cin >> newBook[TITLE];
+	std::getline(std::cin, newBook[TITLE]);
 	std::cout << "AUTHOR ";
-	std::cin >> newBook[AUTHOR];
+	std::getline(std::cin, newBook[AUTHOR]);
 	std::cout << "PUBLISHER: ";
-	std::cin >> newBook[PUBLISHER];
+	std::getline(std::cin, newBook[PUBLISHER]);
 	std::cout << "DATE: ";
-	std::cin >> newBook[DATE];
+	std::getline(std::cin, newBook[DATE]);
 	std::cout << "WHOLESALE: ";
-	std::cin >> newBook[WHOLESALE];
+	std::getline(std::cin, newBook[WHOLESALE]);
 	std::cout << "RETAIL: ";
-	std::cin >> newBook[RETAIL];
+	std::getline(std::cin, newBook[RETAIL]);
 	std::cout << "QUANTITY: ";
-	std::cin >> newBook[QUANTITY];
+	std::getline(std::cin, newBook[QUANTITY]);
 
 	//If book exists, just add quantity to existing
 	bool exists = false;
@@ -320,12 +311,13 @@ void Inventory::addBook() //fix nBookdata
 		{
 			bookData[insertAt][i] = newBook[i];
 		}
+		nBookData = nullptr;
 		invenSize += 1;
-	}*/
+	}
 }
 void Inventory::deleteBook()//fix nbookdata
 {
-	/*int toDelete;
+	int toDelete;
 	std::cout << "Which # book to remove?" << std::endl;
 	std::cin >> toDelete;
 
@@ -373,12 +365,13 @@ void Inventory::deleteBook()//fix nbookdata
 
 	delete[] bookData;
 	bookData = nBookData;
-	invenSize -= 1;*/
+	nBookData = nullptr;
+	invenSize -= 1;
 
 }
 std::string Inventory::bookListing(std::string choice)
 {
-	/*//Print out categories first(This all needs to be formatted / put into a template later)
+	//Print out categories first(This all needs to be formatted / put into a template later)
 	std::cout << "# " << "ISBN " << "TITLE " << "AUTHOR " << "PUBLISHER " << "ADD_DATE " << "WHOLESALE_PRICE " << "RETAIL_PRICE " << "QUANTITY " << std::endl;
 
 	//Print out contents of array created by initialInventory, perhaps changed by other methods
@@ -404,12 +397,12 @@ std::string Inventory::bookListing(std::string choice)
 		std::cin >> bookChoice;
 		return bookChoice;
 	}
-	return bookChoice;*/
+	return bookChoice;
 	return "0"; //fake return delete after.
 }
 void Inventory::editBook(std::string bookChoice)
 {
-	/*std::cout << "What to edit:" << std::endl;
+	std::cout << "What to edit:" << std::endl;
 	std::cout << "1. ISBN" << std::endl;
 	std::cout << "2. TITLE" << std::endl;
 	std::cout << "3. AUTHOR" << std::endl;
@@ -455,7 +448,7 @@ void Inventory::editBook(std::string bookChoice)
 	case 8:
 		std::cout << "Quantity successfully changed to " << changeTo << std::endl;
 		break;
-	}*/
+	}
 }
 //This is the start of the report modules functions.
 Report::Report()
@@ -483,7 +476,7 @@ void Report::reportMenu()
 			dateList();
 		if (choice != "7")
 		{
-			std::cout << "Would you like to select another invnetory function? (y/n): ";
+			std::cout << "Would you like to select another report function? (y/n): ";
 			std::getline(std::cin, choice);
 		}
 	} while (choice != "7" || choice == "Y" || choice == "y");
