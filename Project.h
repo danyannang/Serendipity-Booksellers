@@ -9,7 +9,7 @@ protected:
 	int newSize;
 public:
 	Module();
-	virtual ~Module() { std::cout << "This is a flag to show module has been destroyed\n";  }
+	virtual ~Module() { std::cout << "This is a flag to show module has been destroyed\n"; }
 	enum field { INDEX, ISBN = 0, TITLE, AUTHOR, PUBLISHER, DATE, WHOLESALE, RETAIL, QUANTITY };
 	void createBookArray();
 	int bookSearch(); //(booklist [i][j]
@@ -27,7 +27,7 @@ class Cashier : public::Module
 	std::string checkoutBooks[25][8];
 public:
 	Cashier();
-	~Cashier() { std::cout << "This is a flag to show a cashier has been destroyed\n";  }
+	~Cashier() { std::cout << "This is a flag to show a cashier has been destroyed\n"; }
 	void cashierMenu();
 	void setTotal(double);
 	void setSubTotal(int);
@@ -44,6 +44,7 @@ public:
 	void addBook();
 	void deleteBook();
 	void editBook(std::string bookChoice);
+	void invenFile();
 };
 class Report : public::Module
 {
