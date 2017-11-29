@@ -480,6 +480,7 @@ void Report::reportMenu()
 			std::getline(std::cin, choice);
 		}
 	} while (choice != "7" || choice == "Y" || choice == "y");
+	deleteBookData();
 }
 void Report::invenList()
 {
