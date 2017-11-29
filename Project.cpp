@@ -20,7 +20,7 @@ void Module::createBookArray()
 	std::cout << "Creating array.\n";
 	std::string unsplit;
 	std::ifstream iniBooks;
-	iniBooks.open("booklist.txt");
+	iniBooks.open("BookStock.txt");
 	if (!iniBooks)
 		std::cout << "Error Opening file.\n";
 	int nthBook = 0;
@@ -153,8 +153,8 @@ void Cashier::cashierMenu() //note for outpitting things neatly books neatly. st
 	std::cout << "Date: " << std::endl;
 	do {
 		std::cout << "Add a book? (y/n): ";
-		std::getline (std::cin, choice);
-		if (choice == "y" || choice =="Y")
+		std::getline(std::cin, choice);
+		if (choice == "y" || choice == "Y")
 		{
 			arrayposition = bookSearch();//booklist[i][j]);
 			if (arrayposition != -1)//output line for the added book
@@ -189,7 +189,7 @@ void Cashier::cashierMenu() //note for outpitting things neatly books neatly. st
 	std::cout << "Qty\tISBN\t\tTitle\t\t\t\t\tPrice\n" << std::endl;
 	for (int i = 0; i < purchasenumber; i++)
 	{
-		std::cout << checkoutBooks[i][QUANTITY] << "\t" << checkoutBooks[i][ISBN] << " " <<checkoutBooks[i][TITLE] << " \t$" << checkoutBooks[i][RETAIL] << std::endl;
+		std::cout << checkoutBooks[i][QUANTITY] << "\t" << checkoutBooks[i][ISBN] << " " << checkoutBooks[i][TITLE] << " \t$" << checkoutBooks[i][RETAIL] << std::endl;
 	}
 	setTotal(subtotal);
 	std::cout << "\tSubtotal: " << std::setw(4) << "$" << std::setprecision(2) << subtotal << std::endl;
@@ -212,6 +212,21 @@ Inventory::Inventory() //changed all invensizes in code to just be size of base 
 {
 	std::cout << "This is a flag to show an inventory has been created.\n";
 }
+void Inventory::invenFile()
+{
+	std::ofstream finBooks;
+	finBooks.open("BookStock2.txt");
+
+	for (int i = 0; i < invenSize - 1; i++)
+	{
+		for (int attr = 0; attr < 8; attr++)
+		{
+			finBooks << bookData[i][attr] << '\t';
+		}
+	}
+	std::cout << "New Inventory File Created" << std::endl;
+	finBooks.close();
+}
 void Inventory::inventoryMenu()
 {
 	std::string choice;
@@ -225,10 +240,13 @@ void Inventory::inventoryMenu()
 		if (choice == "1")
 		{
 			addBook();
+			invenFile();
 		}
 		else if (choice == "2")
 		{
+			bookListing(choice);
 			deleteBook();
+			invenFile();
 		}
 		else if (choice == "3")
 		{
@@ -238,6 +256,7 @@ void Inventory::inventoryMenu()
 			{
 				editBook(bookchoice);
 			}
+			invenFile();
 		}
 		std::cout << "Return to the inventory menu? (y/n): ";
 		std::getline(std::cin, choice);
