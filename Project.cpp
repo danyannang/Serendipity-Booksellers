@@ -10,11 +10,7 @@ Module::Module() //Add creation of book array.
 	std::cout << "This is a flag to show that a Module has been created.\n";
 	invenSize = 2;
 	newSize = 2;
-	/*bookData = new std::string*[newSize];
-	for (int i = 0; i < newSize; i++)
-	{
-		bookData[i] = new std::string[8];
-	}*/
+	backUpBookFile = "This is the backup data: ";
 }
 void Module::createBookArray(std::string **&bookData)
 {
@@ -94,6 +90,10 @@ void Module::createBookArray(std::string **&bookData)
 	}
 	iniBooks.close();
 }
+Module operator+(const Module &user, std::string tempstring)
+{
+	return Module(user.backUpBookFile + tempstring);
+}
 void Module::cashierMenu(std::string **&bookData)
 {
 	std::cout << "Check the child class.\n";
@@ -106,18 +106,39 @@ void Module::reportMenu(std::string **&bookData)
 {
 	std::cout << "Check the child class.\n";
 }
-int Module::bookSearch(std::string **&bookData) //(booklist[i][j]
+int Module::bookSearch(std::string **&bookData) //booksearch, for looking up books within the array.
 {
-	std::string isbn;
-	std::cout << "Enter the isbn of the book you are searching: ";
-	std::getline(std::cin, isbn);
+	std::string choice;
+	std::string searchChoice;
+	int attrchoice = 0;
+	std::cout << "What specification will you search for?\n\n\n1. ISBN\n2. Title\n3. Author\n4. Publisher\n5. Date Added\n6. Store Price\n\nEnter your Choice: ";
+	std::getline(std::cin, choice);
+	if (choice == "1")
+		attrchoice = 0;
+	else if (choice == "2")
+		attrchoice = 1;
+	else if (choice == "3")
+		attrchoice = 2;
+	else if (choice == "4")
+		attrchoice = 3;
+	else if (choice == "5")
+		attrchoice = 4;
+	else if (choice == "6")
+		attrchoice = 6;
+	else
+		std::cout << "Not a valid entry, defaulting to ISBN search.\n";
+
+	std::cout << std::endl << std::endl;
+	std::cout << "Now enter what you want to search based on the previous specification: ";
+	std::getline(std::cin, searchChoice);
+	
 	//linear search to find isbn;
 	int index = 0;
 	int position = -1;
 	bool found = false;
 	while (index < invenSize - 1 && !found) //100 is fake size declarator for the array
 	{
-		if (bookData[index][ISBN] == isbn)
+		if (bookData[index][attrchoice] == searchChoice)
 		{
 			found = true;
 			position = index;
@@ -156,7 +177,7 @@ void Cashier::cashierMenu(std::string **&bookData) //note for outpitting things 
 	std::cout << "Serendipity BookSellers\n";
 	std::cout << "Date: " << std::endl;
 	do {
-		std::cout << "Add a book? (y/n): ";
+		std::cout << "Purchase a book? (y/n): ";
 		std::getline(std::cin, choice);
 		if (choice == "y" || choice == "Y")
 		{
@@ -527,7 +548,7 @@ void Report::reportMenu(std::string **&bookData)
 			dateList(bookData);
 		if (choice != "7")
 		{
-			std::cout << "Would you like to select another inventory function? (y/n): ";
+			std::cout << "Would you like to select another report module function? (y/n): ";
 			std::getline(std::cin, choice);
 		}
 	} while (choice != "7" || choice == "Y" || choice == "y");
@@ -581,8 +602,8 @@ void Report::wholesaleVal(std::string **&bookData)
 	std::cout << "***WHOLESALE COSTS*** " << std::endl << std::endl;
 	for (int i = 0; i < invenSize - 2; i++)
 	{
-		std::cout << std::left << std::setw(86) << bookData[i][1].substr(0, 78) << std::setw(6) << "$" + bookData[i][5] << std::endl;
-		double isample = std::stod(bookData[i][5]);
+		std::cout << std::left << std::setw(86) << bookData[i][TITLE].substr(0, 78) << std::setw(6) << "$" + bookData[i][WHOLESALE] << std::endl;
+		double isample = std::stod(bookData[i][WHOLESALE]);
 		total += isample;
 	}
 	std::cout << std::endl << "TOTAL WHOLESALE COST: " << total << " $" << std::endl << std::endl;
@@ -594,7 +615,7 @@ void Report::retailVal(std::string **&bookData)
 	std::cout << "***RETAIL COSTS***" << std::endl << std::endl;
 	for (int i = 0; i < invenSize - 2; i++)
 	{
-		std::cout << std::left << std::setw(86) << bookData[i][1].substr(0, 78) << std::setw(6) << "$" + bookData[i][6] << std::endl;
+		std::cout << std::left << std::setw(86) << bookData[i][TITLE].substr(0, 78) << std::setw(6) << "$" + bookData[i][RETAIL] << std::endl;
 		double isample = std::stod(bookData[i][6]);
 		total += isample;
 	}
