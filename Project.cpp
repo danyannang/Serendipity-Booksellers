@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -205,12 +206,12 @@ void Cashier::cashierMenu(std::string **&bookData) //note for outpitting things 
 	{
 		std::cout << checkoutBooks[i][QUANTITY] << "\t" << checkoutBooks[i][ISBN] << " \t" << checkoutBooks[i][TITLE].substr(0, 30) << " \t\t$" << checkoutBooks[i][RETAIL] << std::endl;
 	}
-	setTotal(subtotal);
+	setTotal();
 	std::cout << "\tSubtotal: " << std::setw(4) << "$" << std::setprecision(2) << std::fixed << subtotal << std::endl;
 	std::cout << "\tTax: " << std::setw(9) << "$" << std::setprecision(2) << std::fixed << tax << std::endl;
 	std::cout << "\tTotal: " << std::setw(7) << "$" << std::setprecision(2) << std::fixed << total << std::endl;
 }
-void Cashier::setTotal(double x)
+void Cashier::setTotal()
 {
 	tax = (subtotal*taxRate);
 	total = subtotal + tax;
@@ -225,12 +226,12 @@ Inventory::Inventory() //changed all invensizes in code to just be size of base 
 {
 	std::cout << "This is a flag to show an inventory has been created.\n";
 }
-void Inventory::invenFile(std::string **&bookData)
+void invenFile(std::string **&bookData, int inventorySize)
 {
 	std::ofstream finBooks;
 	finBooks.open("BookStock2.txt");
 
-	for (int i = 0; i < invenSize - 1; i++)
+	for (int i = 0; i < inventorySize - 1; i++)
 	{
 		for (int attr = 0; attr < 8; attr++)
 		{
@@ -253,7 +254,7 @@ void Inventory::inventoryMenu(std::string **&bookData)
 		if (choice == "1")
 		{
 			addBook(bookData);
-			invenFile(bookData);
+			invenFile(bookData, invenSize);
 		}
 		else if (choice == "2")
 		{
@@ -269,7 +270,7 @@ void Inventory::inventoryMenu(std::string **&bookData)
 			{
 				std::cout << msg << std::endl;
 			}
-			invenFile(bookData);
+			invenFile(bookData, invenSize);
 		}
 		else if (choice == "3")
 		{
@@ -576,7 +577,7 @@ void Report::invenList(std::string **&bookData)
 void Report::wholesaleVal(std::string **&bookData)
 {
 	std::cout << std::endl;
-	double  total = 0.0;
+	double total = 0.0;
 	std::cout << "***WHOLESALE COSTS*** " << std::endl << std::endl;
 	for (int i = 0; i < invenSize - 2; i++)
 	{
