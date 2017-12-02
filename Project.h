@@ -19,9 +19,10 @@ public:
 	virtual void cashierMenu(std::string **&bookData);
 	virtual void inventoryMenu(std::string **&bookData);
 	virtual void reportMenu(std::string **&bookData);
-};
+};	
 class Cashier : public::Module
 {
+	friend class Inventory;
 	double total;
 	double subtotal;
 	double taxRate;
@@ -31,12 +32,11 @@ public:
 	Cashier();
 	~Cashier() { std::cout << "This is a flag to show a cashier has been destroyed\n"; }
 	void cashierMenu(std::string **&bookData);
-	void setTotal(double);
+	void setTotal();
 	void setSubTotal(int, std::string **&bookData);
 };
 class Inventory : public::Module
 {
-	friend class Report;
 	std::string initialbooks;
 public:
 	Inventory();
@@ -44,7 +44,7 @@ public:
 	void inventoryMenu(std::string **&bookData);
 	std::string bookListing(std::string, std::string **&bookData);
 	void addBook(std::string **&bookData);
-	void invenFile(std::string **&bookData);
+	friend void invenFile(std::string **&bookData, int inventorySize);
 	void deleteBook(std::string **&bookData, int toDelete);
 	void editBook(std::string bookChoice, std::string **&bookData);
 };
