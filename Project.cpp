@@ -732,57 +732,6 @@ void Report::wholeCostList(std::string **&bookData) //ITEMP ONCE AGAIN USE ARBIT
 			case 7:
 				std::cout << std::setw(15) << bookData[x][y] << std::endl;
 				break;
-			case 8:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 9:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 10:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 11:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 12:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 13:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 14:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 15:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 16:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 17:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 18:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 19:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 20:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 21:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 22:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 23:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
-			case 24:
-				std::cout << std::setw(15) << bookData[x][y] << std::endl;
-				break;
 			}
 		}
 	}
