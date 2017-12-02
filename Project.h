@@ -4,21 +4,24 @@
 
 class Module {
 protected:
-	//std::string **bookData;
 	int invenSize;
 	int newSize;
+	std::string backUpBookFile;
 public:
 	Module();
+	Module(std::string tempstring) { backUpBookFile = tempstring; }
 	virtual ~Module() { std::cout << "This is a flag to show module has been destroyed\n"; }
 	enum field { INDEX, ISBN = 0, TITLE, AUTHOR, PUBLISHER, DATE, WHOLESALE, RETAIL, QUANTITY };
 	void createBookArray(std::string **&bookData);
-	int bookSearch(std::string **&bookData); //(booklist [i][j]
+	int bookSearch(std::string **&bookData); 
 	int getinvenSize() { return invenSize; }
 	void setInvenSize(int maininvensize) { invenSize = maininvensize; };
 	void deleteBookData(std::string **&bookData);
 	virtual void cashierMenu(std::string **&bookData);
 	virtual void inventoryMenu(std::string **&bookData);
 	virtual void reportMenu(std::string **&bookData);
+	friend Module operator+(const Module &user, std::string tempstring);
+	std::string getBackUpBook() { return backUpBookFile; }
 };	
 class Cashier : public::Module
 {
@@ -33,6 +36,8 @@ public:
 	~Cashier() { std::cout << "This is a flag to show a cashier has been destroyed\n"; }
 	void cashierMenu(std::string **&bookData);
 	void setTotal();
+	double getSubtotal() { return subtotal; }
+	double getTax() { return tax; }
 	void setSubTotal(int, std::string **&bookData);
 };
 class Inventory : public::Module
