@@ -9,13 +9,13 @@ Module::Module() //Add creation of book array.
 	std::cout << "This is a flag to show that a Module has been created.\n";
 	invenSize = 2;
 	newSize = 2;
-	bookData = new std::string*[newSize];
+	/*bookData = new std::string*[newSize];
 	for (int i = 0; i < newSize; i++)
 	{
 		bookData[i] = new std::string[8];
-	}
+	}*/
 }
-void Module::createBookArray()
+void Module::createBookArray(std::string **&bookData)
 {
 	std::cout << "Creating array.\n";
 	std::string unsplit;
@@ -93,19 +93,19 @@ void Module::createBookArray()
 	}
 	iniBooks.close();
 }
-void Module::cashierMenu()
+void Module::cashierMenu(std::string **&bookData)
 {
 	std::cout << "Check the child class.\n";
 }
-void Module::inventoryMenu()
+void Module::inventoryMenu(std::string **&bookData)
 {
 	std::cout << "Check the child class.\n";
 }
-void Module::reportMenu()
+void Module::reportMenu(std::string **&bookData)
 {
 	std::cout << "Check the child class.\n";
 }
-int Module::bookSearch() //(booklist[i][j]
+int Module::bookSearch(std::string **&bookData) //(booklist[i][j]
 {
 	std::string isbn;
 	std::cout << "Enter the isbn of the book you are searching: ";
@@ -114,7 +114,7 @@ int Module::bookSearch() //(booklist[i][j]
 	int index = 0;
 	int position = -1;
 	bool found = false;
-	while (index < invenSize && !found) //100 is fake size declarator for the array
+	while (index < invenSize - 1 && !found) //100 is fake size declarator for the array
 	{
 		if (bookData[index][ISBN] == isbn)
 		{
@@ -123,9 +123,12 @@ int Module::bookSearch() //(booklist[i][j]
 		}
 		index++;
 	}
-	return position;
+	if (found == true)
+		return position;
+	else
+		throw "Error Book not found.\n";
 }
-void Module::deleteBookData()
+void Module::deleteBookData(std::string **&bookData)
 {
 	for (int i = 0; i < invenSize - 1; i++)
 	{
@@ -144,7 +147,7 @@ Cashier::Cashier()
 	tax = 0;
 	taxRate = .0875;
 }
-void Cashier::cashierMenu() //note for outpitting things neatly books neatly. store books in array.
+void Cashier::cashierMenu(std::string **&bookData) //note for outpitting things neatly books neatly. store books in array.
 {
 	int arrayposition;
 	int purchasenumber = 0;
@@ -153,56 +156,66 @@ void Cashier::cashierMenu() //note for outpitting things neatly books neatly. st
 	std::cout << "Date: " << std::endl;
 	do {
 		std::cout << "Add a book? (y/n): ";
-		std::getline (std::cin, choice);
-		if (choice == "y" || choice =="Y")
+		std::getline(std::cin, choice);
+		if (choice == "y" || choice == "Y")
 		{
-			arrayposition = bookSearch();//booklist[i][j]);
-			if (arrayposition != -1)//output line for the added book
+			try
 			{
-				std::string tempstring;
-				int count;
-				setSubTotal(arrayposition);//Adds to total
-				if (bookData[arrayposition][QUANTITY] != "0")
+				arrayposition = bookSearch(bookData);//booklist[i][j]);
+				if (arrayposition != -1)//output line for the added book
 				{
-					std::cout << "Qty\tISBN\t\tTitle\t\t\t\t\tPrice\tTotal\n" << std::endl;
-					std::cout << bookData[arrayposition][QUANTITY] << "\t" << bookData[arrayposition][ISBN] << " " << bookData[arrayposition][TITLE] << " \t$" << bookData[arrayposition][RETAIL] << " $" << subtotal << std::endl;
-					for (int j = 0; j < 8; j++) //stores all the purchased books in a new array.
+					std::string tempstring;
+					int count;
+					setSubTotal(arrayposition, bookData);//Adds to total
+					if (bookData[arrayposition][QUANTITY] != "0")
 					{
-						checkoutBooks[purchasenumber][j] = bookData[arrayposition][j];
+						std::cout << "Qty\tISBN\t\tTitle\t\t\t\t\tPrice\tTotal\n" << std::endl;
+						std::cout << bookData[arrayposition][QUANTITY] << "\t" << bookData[arrayposition][ISBN] << " \t" << bookData[arrayposition][TITLE].substr(0, 30) << " \t\t$" << bookData[arrayposition][RETAIL] << " $" << subtotal << std::endl;
+						for (int j = 0; j < 8; j++) //stores all the purchased books in a new array.
+						{
+							checkoutBooks[purchasenumber][j] = bookData[arrayposition][j];
+						}
+						purchasenumber++;
+						tempstring = bookData[arrayposition][QUANTITY];
+						count = std::stoi(tempstring);
+						count -= 1;
+						tempstring = std::to_string(count);
+						bookData[arrayposition][QUANTITY] = tempstring;
 					}
-					purchasenumber++;
-					tempstring = bookData[arrayposition][QUANTITY];
-					count = std::stoi(tempstring);
-					count -= 1;
-					tempstring = std::to_string(count);
-					bookData[arrayposition][QUANTITY] = tempstring;
+					else if (bookData[arrayposition][QUANTITY] == "0")
+					{
+						std::cout << "That book is out of stock.\n";
+					}
 				}
-				else if (bookData[arrayposition][QUANTITY] == "0")
-				{
-					std::cout << "That book is out of stock.\n";
-				}
+				else if (arrayposition == -1)
+					std::cout << "Book not found.\n";
 			}
-			else if (arrayposition == -1)
-				std::cout << "Book not found.\n";
+			catch (char *msg)
+			{
+				std::cout << msg;
+			}
+			catch (...)
+			{
+				std::cout << "Generic catch error message.\n";
+			}
 		}
 	} while (arrayposition = -1 && choice == "y" || choice == "Y");
 	std::cout << "Qty\tISBN\t\tTitle\t\t\t\t\tPrice\n" << std::endl;
 	for (int i = 0; i < purchasenumber; i++)
 	{
-		std::cout << checkoutBooks[i][QUANTITY] << "\t" << checkoutBooks[i][ISBN] << " " <<checkoutBooks[i][TITLE] << " \t$" << checkoutBooks[i][RETAIL] << std::endl;
+		std::cout << checkoutBooks[i][QUANTITY] << "\t" << checkoutBooks[i][ISBN] << " \t" << checkoutBooks[i][TITLE].substr(0, 30) << " \t\t$" << checkoutBooks[i][RETAIL] << std::endl;
 	}
 	setTotal(subtotal);
-	std::cout << "\tSubtotal: " << std::setw(4) << "$" << std::setprecision(2) << subtotal << std::endl;
-	std::cout << "\tTax: " << std::setw(9) << "$" << std::setprecision(2) << tax << std::endl;
-	std::cout << "\tTotal: " << std::setw(7) << "$" << std::setprecision(2) << total << std::endl;
-	deleteBookData();
+	std::cout << "\tSubtotal: " << std::setw(4) << "$" << std::setprecision(2) << std::fixed << subtotal << std::endl;
+	std::cout << "\tTax: " << std::setw(9) << "$" << std::setprecision(2) << std::fixed << tax << std::endl;
+	std::cout << "\tTotal: " << std::setw(7) << "$" << std::setprecision(2) << std::fixed << total << std::endl;
 }
 void Cashier::setTotal(double x)
 {
 	tax = (subtotal*taxRate);
 	total = subtotal + tax;
 }
-void Cashier::setSubTotal(int x)
+void Cashier::setSubTotal(int x, std::string **&bookData)
 {
 	double temp = std::stod(bookData[x][RETAIL]);
 	subtotal += temp;
@@ -212,7 +225,22 @@ Inventory::Inventory() //changed all invensizes in code to just be size of base 
 {
 	std::cout << "This is a flag to show an inventory has been created.\n";
 }
-void Inventory::inventoryMenu()
+void Inventory::invenFile(std::string **&bookData)
+{
+	std::ofstream finBooks;
+	finBooks.open("BookStock2.txt");
+
+	for (int i = 0; i < invenSize - 1; i++)
+	{
+		for (int attr = 0; attr < 8; attr++)
+		{
+			finBooks << bookData[i][attr] << '\t';
+		}
+	}
+	std::cout << "New Inventory File Created" << std::endl;
+	finBooks.close();
+}
+void Inventory::inventoryMenu(std::string **&bookData)
 {
 	std::string choice;
 	do {
@@ -224,27 +252,44 @@ void Inventory::inventoryMenu()
 		std::getline(std::cin, choice);
 		if (choice == "1")
 		{
-			addBook();
+			addBook(bookData);
+			invenFile(bookData);
 		}
 		else if (choice == "2")
 		{
-			deleteBook();
+			bookListing(choice, bookData);
+			int toDelete;
+			try
+			{
+				std::cout << "Which # book to remove?" << std::endl;
+				std::cin >> toDelete;
+				deleteBook(bookData, toDelete);
+			}
+			catch (char *msg)
+			{
+				std::cout << msg << std::endl;
+			}
+			invenFile(bookData);
 		}
 		else if (choice == "3")
 		{
 			std::string bookchoice;
-			bookchoice = bookListing(choice);
+			bookchoice = bookListing(choice, bookData);
 			if (bookchoice != "Q") // Why q?
 			{
-				editBook(bookchoice);
+				try
+				{
+					editBook(bookchoice, bookData);
+				}
+				catch (char *msg)
+				{
+					std::cout << msg << std::endl;
+				}
 			}
 		}
-		std::cout << "Return to the inventory menu? (y/n): ";
-		std::getline(std::cin, choice);
-	} while (choice == "y" || choice == "Y" || choice != "4");
-	deleteBookData();
+	} while (choice != "4");
 }
-void Inventory::addBook() //fix nBookdata
+void Inventory::addBook(std::string **&bookData) //fix nBookdata
 {
 	std::string newBook[8];
 	std::cout << "Enter info for new book: " << std::endl;
@@ -252,15 +297,15 @@ void Inventory::addBook() //fix nBookdata
 	std::getline(std::cin, newBook[ISBN]);
 	std::cout << "TITLE: ";
 	std::getline(std::cin, newBook[TITLE]);
-	std::cout << "AUTHOR ";
+	std::cout << "AUTHOR: ";
 	std::getline(std::cin, newBook[AUTHOR]);
 	std::cout << "PUBLISHER: ";
 	std::getline(std::cin, newBook[PUBLISHER]);
 	std::cout << "DATE: ";
 	std::getline(std::cin, newBook[DATE]);
-	std::cout << "WHOLESALE: ";
+	std::cout << "WHOLESALE: $";
 	std::getline(std::cin, newBook[WHOLESALE]);
-	std::cout << "RETAIL: ";
+	std::cout << "RETAIL: $";
 	std::getline(std::cin, newBook[RETAIL]);
 	std::cout << "QUANTITY: ";
 	std::getline(std::cin, newBook[QUANTITY]);
@@ -315,12 +360,13 @@ void Inventory::addBook() //fix nBookdata
 		invenSize += 1;
 	}
 }
-void Inventory::deleteBook()//fix nbookdata
+void Inventory::deleteBook(std::string **&bookData, int toDelete)//fix nbookdata
 {
-	int toDelete;
-	std::cout << "Which # book to remove?" << std::endl;
-	std::cin >> toDelete;
-
+	int deleteThis = toDelete;
+	if ((deleteThis < 0) || (deleteThis > invenSize - 3))
+	{
+		throw "No book at specified index";
+	}
 	int newSize = invenSize - 1;
 
 	std::string **nBookData = new std::string*[newSize];
@@ -333,7 +379,7 @@ void Inventory::deleteBook()//fix nbookdata
 
 	for (int i = 0; i < newSize; i++)
 	{
-		if (i == toDelete)
+		if (i == deleteThis)
 		{
 			shift = true;
 		}
@@ -356,7 +402,7 @@ void Inventory::deleteBook()//fix nbookdata
 		}
 	}
 
-	std::cout << bookData[toDelete][TITLE] << " has been removed from the inventory" << std::endl;
+	std::cout << bookData[deleteThis][TITLE] << " has been removed from the inventory" << std::endl;
 
 	for (int i = 0; i < invenSize - 1; i++)
 	{
@@ -369,7 +415,7 @@ void Inventory::deleteBook()//fix nbookdata
 	invenSize -= 1;
 
 }
-std::string Inventory::bookListing(std::string choice)
+std::string Inventory::bookListing(std::string choice, std::string **&bookData)
 {
 	//Print out categories first(This all needs to be formatted / put into a template later)
 	std::cout << "# " << "ISBN " << "TITLE " << "AUTHOR " << "PUBLISHER " << "ADD_DATE " << "WHOLESALE_PRICE " << "RETAIL_PRICE " << "QUANTITY " << std::endl;
@@ -381,7 +427,7 @@ std::string Inventory::bookListing(std::string choice)
 		std::cout << bookNum << " ";
 		for (int attr = 0; attr < 8; attr++)
 		{
-			std::cout << bookData[bookNum][attr] << " ";
+			std::cout << bookData[bookNum][attr].substr(0, 40) << " ";
 			if (attr == 7)
 			{
 				std::cout << std::endl;
@@ -393,16 +439,19 @@ std::string Inventory::bookListing(std::string choice)
 	std::string bookChoice;
 	if (choice == "3")//If user wanted to edit a book's info, ask them which one, and return it to use an an argument for the editBook method
 	{
-		std::cout << "Which book's info to edit? Or \"Q\" to go back ";
-		std::cin >> bookChoice;
+		std::cout << "Which book's info to edit? (Or \"Q\" to go back): ";
+		std::getline(std::cin, bookChoice);
 		return bookChoice;
 	}
 	return bookChoice;
-	return "0"; //fake return delete after.
 }
-void Inventory::editBook(std::string bookChoice)
+void Inventory::editBook(std::string bookChoice, std::string **&bookData)
 {
-	std::cout << "What to edit:" << std::endl;
+	std::string toEdit = bookChoice;
+	if ((stoi(toEdit) < 0) || (stoi(toEdit) > invenSize - 3))
+	{
+		throw "No book at specified index";
+	}
 	std::cout << "1. ISBN" << std::endl;
 	std::cout << "2. TITLE" << std::endl;
 	std::cout << "3. AUTHOR" << std::endl;
@@ -411,15 +460,16 @@ void Inventory::editBook(std::string bookChoice)
 	std::cout << "6. WHOLESALE PRICE" << std::endl;
 	std::cout << "7. RETAIL PRICE" << std::endl;
 	std::cout << "8. QUANTITY" << std::endl;
+	std::cout << "What to edit: ";
 
 	std::string toChange;
-	std::cin >> toChange;
+	std::getline(std::cin, toChange);
 
 	std::cout << "Current: " << bookData[stoi(bookChoice)][stoi(toChange) - 1] << std::endl;
 
 	std::string changeTo;
 	std::cout << "Change to: ";
-	std::cin >> changeTo;
+	std::getline(std::cin, changeTo);
 
 	bookData[stoi(bookChoice)][stoi(toChange) - 1] = changeTo;
 
@@ -455,7 +505,7 @@ Report::Report()
 {
 	std::cout << "This is a flag to show that a report has been created.\n";
 }
-void Report::reportMenu()
+void Report::reportMenu(std::string **&bookData)
 {
 	std::string choice;
 	do {
@@ -463,87 +513,87 @@ void Report::reportMenu()
 		std::cout << "Enter your choice: ";
 		std::getline(std::cin, choice);
 		if (choice == "1")
-			invenList();
+			invenList(bookData);
 		else if (choice == "2")
-			wholesaleVal();
+			wholesaleVal(bookData);
 		else if (choice == "3")
-			retailVal();
+			retailVal(bookData);
 		else if (choice == "4")
-			quantitylist();
+			quantitylist(bookData);
 		else if (choice == "5")
-			wholeCostList();
+			wholeCostList(bookData);
 		else if (choice == "6")
-			dateList();
+			dateList(bookData);
 		if (choice != "7")
 		{
 			std::cout << "Would you like to select another inventory function? (y/n): ";
 			std::getline(std::cin, choice);
 		}
 	} while (choice != "7" || choice == "Y" || choice == "y");
-	deleteBookData();
 }
-void Report::invenList()
+void Report::invenList(std::string **&bookData)
 {
-	std::cout << std::setw(10) << "ISBN" << std::setw(30) << "TITLE" << std::setw(15) << "AUTHOR" << std::setw(15) << "PUBLISHER" << std::setw(15) << "DATE" << std::setw(5) << "#" << std::setw(15) << "WHOLESALECOST" << std::setw(15) << "RETAIL PRICE" << std::endl;
-	for (int i = 0; i < 25; i++)
+	std::cout << std::left << std::setw(12) << "ISBN" << std::setw(78) << "TITLE" << std::setw(25) << "AUTHOR" << std::setw(26) << "PUBLISHER" << std::setw(15) << "DATE" << std::setw(8) << "WHOLE" << std::setw(12) << "RETAIL" << std::setw(5) << "#" << std::endl;
+	for (int i = 0; i < invenSize - 2; i++)
 	{
 
 		std::cout << std::endl;
+
 		for (int k = 0; k < 8; k++)
 		{
 			switch (k)
 			{
 
 			case 0:
-				std::cout << std::fixed << std::left << std::setw(12) << bookData[i][k];
+				std::cout << std::fixed << std::flush << std::left << std::setw(12) << bookData[i][k];
 				break;
 			case 1:
-				std::cout << std::fixed << std::left << std::setw(30) << bookData[i][k];
+				std::cout << std::fixed << std::left << std::setw(78) << bookData[i][k].substr(0, 75);
 				break;
 			case 2:
-				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
+				std::cout << std::fixed << std::left << std::setw(25) << bookData[i][k];
 				break;
 			case 3:
-				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
+				std::cout << std::fixed << std::left << std::setw(26) << bookData[i][k];
 				break;
 			case 4:
 				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
 				break;
 			case 5:
-				std::cout << std::fixed << std::left << std::setw(5) << bookData[i][k];
+				std::cout << std::fixed << std::left << std::setw(8) << bookData[i][k];
 				break;
 			case 6:
-				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
+				std::cout << std::fixed << std::left << std::setw(12) << bookData[i][k];
 				break;
 			case 7:
-				std::cout << std::fixed << std::left << std::setw(15) << bookData[i][k];
+				std::cout << std::fixed << std::left << std::setw(5) << bookData[i][k];
 				break;
 			}
 		}
 		std::cout << std::endl;
 	}
 }
-void Report::wholesaleVal()
+void Report::wholesaleVal(std::string **&bookData)
 {
 	std::cout << std::endl;
 	double  total = 0.0;
 	std::cout << "***WHOLESALE COSTS*** " << std::endl << std::endl;
-	for (int i = 0; i < 25; i++)
+	for (int i = 0; i < invenSize - 2; i++)
 	{
-		std::cout << std::left << std::setw(80) << bookData[i][1] + ": " << std::setw(6) << "$" + bookData[i][5] << std::endl;
+		std::cout << std::left << std::setw(86) << bookData[i][1].substr(0, 78) << std::setw(6) << "$" + bookData[i][5] << std::endl;
 		double isample = std::stod(bookData[i][5]);
 		total += isample;
 	}
 	std::cout << std::endl << "TOTAL WHOLESALE COST: " << total << " $" << std::endl << std::endl;
 }
-void Report::retailVal()
+void Report::retailVal(std::string **&bookData)
 {
 	std::cout << std::endl;
 	double  total = 0.0;
 	std::cout << "***RETAIL COSTS***" << std::endl << std::endl;
-	for (int i = 0; i < 25; i++)
+	for (int i = 0; i < invenSize - 2; i++)
 	{
-		std::cout << std::left << std::setw(80) << bookData[i][1] + ": " << std::setw(6) << "$" + bookData[i][6] << std::endl;
+		std::cout << std::left << std::setw(86) << bookData[i][1].substr(0, 78) << std::setw(6) << "$" + bookData[i][6] << std::endl;
 		double isample = std::stod(bookData[i][6]);
 		total += isample;
 	}
@@ -561,21 +611,21 @@ void Report::swapV(int *x, int *y)
 	*x = *y;
 	*y = temp;
 }
-void Report::quantitylist()//need to check and update
+void Report::quantitylist(std::string **&bookData)//need to check and update //UPDATE AND REWRITE FOR NEW BOOKDATA ITEMP NEEDS TO BE EDITED, right now only used arbtitrary value
 {
 	std::cout << std::setw(10) << "ISBN" << std::setw(30) << "TITLE" << std::setw(15) << "AUTHOR" << std::setw(15) << "PUBLISHER" << std::setw(15) << "DATE" << std::setw(5) << "#" << std::setw(15) << "WHOLESALECOST" << std::setw(15) << "RETAIL PRICE" << std::endl;
-	int itemp[24][2] = {};
+	int itemp[100][2];
 	int swap1 = 0;
 	int swap2 = 0;
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < invenSize - 2; i++)
 	{
 		itemp[i][0] = i;
 		itemp[i][1] = std::stoi(bookData[i][7]);
 	}
-	for (int k = 0; k < 24; k++)
+	for (int k = 0; k < invenSize - 2; k++)
 	{
 
-		for (int i = 0; i < 24; i++)
+		for (int i = 0; i < invenSize - 2; i++)
 		{
 
 			if (itemp[i][1] > itemp[k][1])
@@ -589,7 +639,7 @@ void Report::quantitylist()//need to check and update
 		}
 
 	}
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < invenSize - 2; i++)
 	{
 		for (int y = 0; y < 8; y++)
 		{
@@ -624,10 +674,10 @@ void Report::quantitylist()//need to check and update
 	}
 
 }
-void Report::wholeCostList()
+void Report::wholeCostList(std::string **&bookData) //ITEMP ONCE AGAIN USE ARBITRARY VALUE //ALSO THIS FUNCTION JUST REPEATS THE SAME VALUE MULTIPLE TIMES.
 {
 	std::cout << std::setw(10) << "ISBN" << std::setw(30) << "TITLE" << std::setw(15) << "AUTHOR" << std::setw(15) << "PUBLISHER" << std::setw(15) << "DATE" << std::setw(5) << "#" << std::setw(15) << "WHOLESALECOST" << std::setw(15) << "RETAIL PRICE" << std::endl;
-	double itemp[24][2] = {};
+	double itemp[100][2] = {};
 	int swap1 = 0;
 	int swap2 = 0;
 
@@ -636,10 +686,10 @@ void Report::wholeCostList()
 		itemp[i][0] = i;
 		itemp[i][1] = std::stod(bookData[i][5]);
 	}
-	for (int k = 0; k < 24; k++)
+	for (int k = 0; k < invenSize - 2; k++)
 	{
 
-		for (int i = 0; i < 24; i++)
+		for (int i = 0; i < invenSize - 1; i++)
 		{
 
 			if (itemp[i][1] > itemp[k][1])
@@ -654,7 +704,7 @@ void Report::wholeCostList()
 
 	}
 
-	for (int i = 0; i < 24; i++)
+	for (int i = 0; i < invenSize - 2; i++)
 	{
 		for (int y = 0; y < 8; y++)
 		{
@@ -737,7 +787,73 @@ void Report::wholeCostList()
 		}
 	}
 }
-void Report::dateList()
+void Report::dateList(std::string **&bookData)
 {
-	std::cout << "Date list is not ready.\n";
+	int itemp[9][2] = {}, days = 0;
+	std::string tempdate = "";
+
+	std::cout << std::setw(10) << "ISBN" << std::setw(30) << "TITLE" <<std:: setw(15) << "AUTHOR" << std::setw(15) << "PUBLISHER" << std::setw(15) << "DATE" << std::setw(5) << "#" << std::setw(15) << "WHOLESALECOST" << std::setw(15) << "RETAIL PRICE" << std::endl;
+
+	int swap1 = 0;
+	int swap2 = 0;
+
+	for (int i = 0; i < 9; i++)
+	{
+		itemp[i][0] = i;
+		tempdate = bookData[i][4];
+		days += stoi(tempdate.substr(1, 4), nullptr) * 364; //year
+		days += stoi(tempdate.substr(6, 2), nullptr) * 31; //month
+		days += stoi(tempdate.substr(9, 2), nullptr); //day
+		itemp[i][1] = days;
+		days = 0;
+	}
+	for (int k = 0; k < 9; k++)
+	{
+
+		for (int i = 0; i < 9; i++)
+		{
+
+			if (itemp[i][1] > itemp[k][1])
+			{
+				swapV(&itemp[i][1], &itemp[k][1]);
+				swapV(&itemp[k][0], &itemp[i][0]);
+				k = i;
+			}
+		}
+
+	}
+
+	for (int i = 0; i<9; i++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			switch (y)
+			{
+			case 0:
+				std::cout << std::setw(10) << bookData[itemp[i][0]][y];
+				break;
+			case 1:
+				std::cout << std::setw(10) << bookData[itemp[i][0]][y];
+				break;
+			case 2:
+				std::cout << std::setw(10) << bookData[itemp[i][0]][y];
+				break;
+			case 3:
+				std::cout << std::setw(10) << bookData[itemp[i][0]][y];
+				break;
+			case 4:
+				std::cout << std::setw(10) << bookData[itemp[i][0]][y];
+				break;
+			case 5:
+				std::cout << std::setw(10) << bookData[itemp[i][0]][y];
+				break;
+			case 6:
+				std::cout << std::setw(10) << bookData[itemp[i][0]][y];
+				break;
+			case 7:
+				std::cout << std::setw(15) << bookData[itemp[i][0]][y] << std::endl;
+				break;
+			}
+		}
+	}
 }
