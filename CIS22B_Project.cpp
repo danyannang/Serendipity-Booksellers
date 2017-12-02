@@ -4,11 +4,25 @@
 #include "Project.h"
 
 using namespace std;
-
+//
+//
+//problem seems to be about data is allocated into bookdata for this test project.
+//
+//
 int main() {
 	string choice;
+	int newSize = 2;
+	string **bookData;
+	bookData = new std::string*[newSize];
+	for (int i = 0; i < newSize; i++)
+	{
+		bookData[i] = new std::string[8];
+	}
 	Module *user = new Module; //Pointer to be used for menu interaction
-	//user->createBookArray();
+	user->createBookArray(bookData);
+	int mainsize = user->getinvenSize();
+	
+
 	delete user;
 	user = nullptr;
 
@@ -25,8 +39,9 @@ int main() {
 		{
 			cout << "You have selected cashier.\n";
 			user = new Cashier;
-			user->createBookArray(); //removelater once book array is dynamically allocated.
-			user->cashierMenu(); //Calls the book module.
+			user->setInvenSize(mainsize);
+			user->cashierMenu(bookData); //Calls the book module.
+			mainsize = user->getinvenSize();
 
 			delete user;
 			user = nullptr; //resets the pointer to be used in another module;
@@ -37,8 +52,9 @@ int main() {
 		{
 			cout << "You have selected Inventory.\n";
 			user = new Inventory;
-			user->createBookArray();
-			user->inventoryMenu();
+			user->setInvenSize(mainsize);
+			user->inventoryMenu(bookData);
+			mainsize = user->getinvenSize();
 
 			delete user;
 			user = nullptr;
@@ -49,8 +65,9 @@ int main() {
 		{
 			cout << "You have selected report.\n";//
 			user = new Report;
-			user->createBookArray();
-			user->reportMenu();
+			user->setInvenSize(mainsize);
+			user->reportMenu(bookData);
+			mainsize = user->getinvenSize();
 
 			delete user;
 			user = nullptr;
@@ -60,6 +77,12 @@ int main() {
 		else
 			choice = "n";
 	} while (choice == "Y" || choice == "y");
+	for (int i = 0; i < mainsize - 1; i++)
+	{
+		delete[] bookData[i];
+	}
+	delete[] bookData;
+	bookData = nullptr;
 
 
 	system("pause");
