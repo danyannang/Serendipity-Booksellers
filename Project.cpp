@@ -400,12 +400,45 @@ void Inventory::inventoryMenu(std::string **&bookData)
 		else if (choice == "3")
 		{
 			bookListing(choice, bookData);
-			int toDelete;
+			std::string toDelete;
+			int tDelete;
 			try
 			{
-				std::cout << "Which # book to remove?" << std::endl;
-				std::cin >> toDelete;
-				deleteBook(bookData, toDelete);
+				std::cout << "Which # book to remove? Or \"Q\" to go back: ";
+				std::getline(std::cin, toDelete);
+				bool valid = false;
+				while (valid == false)
+				{
+					if (toDelete == "Q")
+					{
+						valid = true;
+					}
+					else
+					{
+						bool allnum = true;
+						for (int i = 0; i < toDelete.length(); i++)
+						{
+						if (!isdigit(toDelete[i]))
+						{
+							allnum = false;
+						}
+						}
+						if (allnum == false)
+						{
+							std::cout << "Invalid input" << std::endl << std::endl;
+							std::cout << "Which # book to remove? Or \"Q\" to go back: ";
+							std::getline(std::cin, toDelete);
+						}
+						else
+						{
+							valid = true;
+						}
+					}
+				}
+				if (toDelete != "Q")
+				{
+					deleteBook(bookData, stoi(toDelete));
+				}
 			}
 			catch (char *msg)
 			{
@@ -440,7 +473,7 @@ void Inventory::bookInfo(std::string bookChoice, std::string **bookData)
 	{
 		if ((stoi(bookChoice) < 0) || (stoi(bookChoice) > invenSize - 3))
 		{
-		throw "No book at specified index";
+			throw "No book at specified index";
 		}
 
 		std::cout << "ISBN: " << bookData[stoi(bookChoice)][ISBN] << std::endl;
@@ -459,21 +492,153 @@ void Inventory::addBook(std::string **&bookData) //fix nBookdata
 	std::string newBook[8];
 	std::cout << "Enter info for new book: " << std::endl;
 	std::cout << "ISBN: ";
+	bool valid0 = false;
 	std::getline(std::cin, newBook[ISBN]);
+	while (valid0 == false)
+	{
+		if ((newBook[ISBN].length() != 10) && (newBook[ISBN].length() != 13))
+		{
+			std::cout << "Invalid input (ISBN must be 10 or 13 digits)" << std::endl;
+			std::getline(std::cin, newBook[ISBN]);
+		}
+		else
+		{
+			valid0 = true;
+		}
+	}
+
 	std::cout << "TITLE: ";
 	std::getline(std::cin, newBook[TITLE]);
+
 	std::cout << "AUTHOR: ";
 	std::getline(std::cin, newBook[AUTHOR]);
+
 	std::cout << "PUBLISHER: ";
 	std::getline(std::cin, newBook[PUBLISHER]);
+
 	std::cout << "DATE: ";
 	std::getline(std::cin, newBook[DATE]);
+	bool valid4 = false;
+	while (valid4 == false)
+	{
+		if ((newBook[DATE].length() != 10) || (newBook[DATE][2] != '/') || (newBook[DATE][5] != '/'))
+		{
+			std::cout << "Invalid input (MM/DD/YYYY format)" << std::endl;
+			std::getline(std::cin, newBook[DATE]);
+		}
+		else if ((!isdigit(newBook[DATE][0])) || (!isdigit(newBook[DATE][1])) || (!isdigit(newBook[DATE][3])) || (!isdigit(newBook[DATE][4])) ||
+			(!isdigit(newBook[DATE][6])) || (!isdigit(newBook[DATE][7])) || (!isdigit(newBook[DATE][8])) || (!isdigit(newBook[DATE][9])))
+		{
+			std::cout << "Invalid input (Numbers only)" << std::endl;
+			std::getline(std::cin, newBook[DATE]);
+		}
+		else
+		{
+			valid4 = true; 
+		}
+	}
+
 	std::cout << "WHOLESALE: $";
 	std::getline(std::cin, newBook[WHOLESALE]);
+	bool valid5 = true;
+	do
+	{
+		valid5 = true;
+		for (int i = 0; i < newBook[WHOLESALE].length(); i++)
+		{
+			if ((newBook[WHOLESALE].length() > 3) && (i == newBook[WHOLESALE].length() - 3))
+			{
+				if ((!isdigit(newBook[WHOLESALE][i])) && (newBook[WHOLESALE][i] != '.'))
+				{
+					std::cout << "Invalid input (Number quantity only)" << std::endl;
+					valid5 = false;
+					break;
+				}
+			}
+			else if (!isdigit(newBook[WHOLESALE][i]))
+			{
+				std::cout << "Invalid input (Number quantity only)" << std::endl;
+				valid5 = false;
+				break;
+			}
+		}
+		if (valid5 == false)
+		{
+			std::getline(std::cin, newBook[WHOLESALE]);
+		}
+	} while (valid5 == false);
+	if (newBook[WHOLESALE].length() >= 4)
+	{
+		if (newBook[WHOLESALE][newBook[WHOLESALE].length() - 3] != '.')
+		{
+			newBook[WHOLESALE] = newBook[WHOLESALE] + ".00";
+		}
+	}
+	else if (newBook[WHOLESALE].find('.') == std::string::npos)
+	{
+		newBook[WHOLESALE] = newBook[WHOLESALE] + ".00";
+	}
+
 	std::cout << "RETAIL: $";
 	std::getline(std::cin, newBook[RETAIL]);
+	bool valid6 = true;
+	do
+	{
+		valid6 = true;
+		for (int i = 0; i < newBook[RETAIL].length(); i++)
+		{
+			if ((newBook[RETAIL].length() > 3) && (i == newBook[RETAIL].length() - 3))
+			{
+				if ((!isdigit(newBook[RETAIL][i])) && (newBook[RETAIL][i] != '.'))
+				{
+					std::cout << "Invalid input (Number quantity only)" << std::endl;
+					valid6 = false;
+					break;
+				}
+			}
+			else if (!isdigit(newBook[RETAIL][i]))
+			{
+				std::cout << "Invalid input (Number quantity only)" << std::endl;
+				valid6 = false;
+				break;
+			}
+		}
+		if (valid6 == false)
+		{
+			std::getline(std::cin, newBook[RETAIL]);
+		}
+	} while (valid6 == false);
+	if (newBook[RETAIL].length() >= 4)
+	{
+		if (newBook[RETAIL][newBook[RETAIL].length() - 3] != '.')
+		{
+			newBook[RETAIL] = newBook[RETAIL] + ".00";
+		}
+	}
+	else if (newBook[RETAIL].find('.') == std::string::npos)
+	{
+		newBook[RETAIL] = newBook[RETAIL] + ".00";
+	}
+
 	std::cout << "QUANTITY: ";
 	std::getline(std::cin, newBook[QUANTITY]);
+	bool valid7 = true; 
+	do
+	{
+		for (int i = 0; i < newBook[QUANTITY].length(); i++)
+		{
+			if (!isdigit(newBook[QUANTITY][i]))
+			{
+				std::cout << "Invalid input (Number quantity only)" << std::endl;
+				valid7 = false;
+				break;
+			}
+		}
+		if (valid7 == false)
+		{
+			std::getline(std::cin, newBook[QUANTITY]);
+		}
+	} while (valid7 == false);
 
 	//If book exists, just add quantity to existing
 	bool exists = false;
@@ -580,12 +745,18 @@ void Inventory::deleteBook(std::string **&bookData, int toDelete)//fix nbookdata
 	invenSize -= 1;
 
 }
+void Inventory::listingHeader()
+{
+	std::cout << std::setw(0) <<  "# " << std::setw(9) << "ISBN " << std::setw(12) << "TITLE " << std::setw(35) << "AUTHOR " << std::setw(22) << "PUBLISHER "
+		<< std::setw(18) << "ADD_DATE " << std::setw(15) << "WHOLESALE " << std::setw(5) << "RETAIL" << std::setw(13) << "QUANTITY " << std::endl;
+}
 std::string Inventory::bookListing(std::string choice, std::string **&bookData)
 {
 	std::cout << std::endl; 
+	listingHeader(); 
 	//Print out categories first(This all needs to be formatted / put into a template later)
-	std::cout << "# " << std::setw(9) << "ISBN " << std::setw(12) << "TITLE " << std::setw(35) << "AUTHOR " << std::setw(22) << "PUBLISHER "
-		<< std::setw(18) << "ADD_DATE " << std::setw(15) << "WHOLESALE " << "RETAIL" << std::setw(13) << "QUANTITY " << std::endl;
+	//std::cout << "# " << std::setw(9) << "ISBN " << std::setw(12) << "TITLE " << std::setw(35) << "AUTHOR " << std::setw(22) << "PUBLISHER "
+		//<< std::setw(18) << "ADD_DATE " << std::setw(15) << "WHOLESALE " << "RETAIL" << std::setw(13) << "QUANTITY " << std::endl;
 
 	//Print out contents of array created by initialInventory, perhaps changed by other methods
 	for (int bookNum = 0; bookNum < invenSize - 2; bookNum++)
@@ -690,12 +861,70 @@ std::string Inventory::bookListing(std::string choice, std::string **&bookData)
 	if (choice == "1")
 	{
 		std::cout << "Which book's info to view? Or \"Q\" to go back ";
-		std::cin >> bookChoice;
+		std::getline(std::cin, bookChoice);
+		bool valid = false; 
+		while (valid == false)
+		{
+			if (bookChoice == "Q")
+			{
+				valid = true; 
+			}
+			else
+			{
+				bool allnum = true; 
+				for (int i = 0; i < bookChoice.length(); i++)
+				{
+					if (!isdigit(bookChoice[i]))
+					{
+						allnum = false; 
+					}
+				}
+				if (allnum == false)
+				{
+					std::cout << "Invalid input" << std::endl << std::endl;
+					std::cout << "Which book's info to view? Or \"Q\" to go back: ";
+					std::getline(std::cin, bookChoice);
+				}
+				else
+				{
+					valid = true; 
+				}
+			}
+		}
 	}
 	else if (choice == "4")//If user wanted to edit a book's info, ask them which one, and return it to use an an argument for the editBook method
 	{
-		std::cout << "Which book's info to edit? Or \"Q\" to go back ";
-		std::cin >> bookChoice;
+		std::cout << "Which book's info to edit? Or \"Q\" to go back: ";
+		std::getline(std::cin, bookChoice);
+		bool valid = false;
+		while (valid == false)
+		{
+			if (bookChoice == "Q")
+			{
+				valid = true;
+			}
+			else
+			{
+				bool allnum = true;
+				for (int i = 0; i < bookChoice.length(); i++)
+				{
+					if (!isdigit(bookChoice[i]))
+					{
+						allnum = false;
+					}
+				}
+				if (allnum == false)
+				{
+					std::cout << "Invalid input" << std::endl << std::endl;
+					std::cout << "Which book's info to edit? Or \"Q\" to go back: ";
+					std::getline(std::cin, bookChoice);
+				}
+				else
+				{
+					valid = true;
+				}
+			}
+		}
 	}
 	std::cout << std::endl;
 	return bookChoice;
@@ -719,12 +948,180 @@ void Inventory::editBook(std::string bookChoice, std::string **&bookData)
 
 	std::string toChange;
 	std::getline(std::cin, toChange);
+	bool valid = false;
+	while (valid == false)
+	{
+		if (toChange == "Q")
+		{
+			valid = true;
+			inventoryMenu(bookData); 
+		}
+		else
+		{
+			bool allnum = true;
+			for (int i = 0; i < toChange.length(); i++)
+			{
+				if (!isdigit(toChange[i]))
+				{
+					allnum = false;
+				}
+			}
+			if (allnum == false)
+			{
+				std::cout << "Invalid input" << std::endl << std::endl;
+				std::cout << "What to edit? Or \"Q\" to go back: ";
+				std::getline(std::cin, toChange);
+			}
+			else
+			{
+				valid = true;
+			}
+		}
+	}
 
 	std::cout << "Current: " << bookData[stoi(bookChoice)][stoi(toChange) - 1] << std::endl;
 
 	std::string changeTo;
 	std::cout << "Change to: ";
 	std::getline(std::cin, changeTo);
+
+	if (toChange == "1")
+	{
+		bool valid0 = false; 
+		while (valid0 == false)
+		{
+			if ((changeTo.length() != 10) && (changeTo.length() != 13))
+			{
+				std::cout << "Invalid input (ISBN must be 10 or 13 digits)" << std::endl;
+				std::getline(std::cin, changeTo);
+			}
+			else
+			{
+				valid0 = true;
+			}
+		}
+	}
+	else if (toChange == "5")
+	{
+		bool valid4 = false;
+		while (valid4 == false)
+		{
+			if ((changeTo.length() != 10) || (changeTo[2] != '/') || (changeTo[5] != '/'))
+			{
+				std::cout << "Invalid input (MM/DD/YYYY format)" << std::endl;
+				std::getline(std::cin, changeTo);
+			}
+			else if ((!isdigit(changeTo[0])) || (!isdigit(changeTo[1])) || (!isdigit(changeTo[3])) || (!isdigit(changeTo[4])) ||
+				(!isdigit(changeTo[6])) || (!isdigit(changeTo[7])) || (!isdigit(changeTo[8])) || (!isdigit(changeTo[9])))
+			{
+				std::cout << "Invalid input (Numbers only)" << std::endl;
+				std::getline(std::cin, changeTo);
+			}
+			else
+			{
+				valid4 = true;
+			}
+		}
+	}
+	else if (toChange == "6")
+	{
+		bool valid5 = true;
+		do
+		{
+			valid5 = true; 
+			for (int i = 0; i < changeTo.length(); i++)
+			{
+				if ((changeTo.length() > 3) && (i == changeTo.length() - 3))
+				{
+					if ((!isdigit(changeTo[i])) && (changeTo[i] != '.'))
+					{ 
+						std::cout << "Invalid input (Number quantity only)" << std::endl;
+						valid5 = false;
+						break;
+					}
+				}
+				else if (!isdigit(changeTo[i]))
+				{
+					std::cout << "Invalid input (Number quantity only)" << std::endl;
+					valid5 = false;
+					break;
+				}
+			}
+			if (valid5 == false)
+			{
+				std::getline(std::cin, changeTo);
+			}
+		} while (valid5 == false); 
+		if (changeTo.length() >= 4)
+		{
+			if (changeTo[changeTo.length() - 3] != '.')
+			{
+				changeTo = changeTo + ".00";
+			}
+		}
+		else if (changeTo.find('.') == std::string::npos)
+		{
+			changeTo = changeTo + ".00";
+		}
+	}
+	else if (toChange == "7")
+	{
+		bool valid6 = true;
+		do
+		{
+			valid6 = true;
+			for (int i = 0; i < changeTo.length(); i++)
+			{
+				if ((changeTo.length() > 3) && (i == changeTo.length() - 3))
+				{
+					if ((!isdigit(changeTo[i])) && (changeTo[i] != '.'))
+					{
+						std::cout << "Invalid input (Number quantity only)" << std::endl;
+						valid6 = false;
+						break;
+					}
+				}
+				else if (!isdigit(changeTo[i]))
+				{
+					std::cout << "Invalid input (Number quantity only)" << std::endl;
+					valid6 = false;
+					break;
+				}
+			}
+			if (valid6 == false)
+			{
+				std::getline(std::cin, changeTo);
+			}
+		} while (valid6 == false);
+		if (changeTo.length() >= 4)
+		{
+			if (changeTo[changeTo.length() - 3] != '.')
+			{
+				changeTo = changeTo + ".00";
+			}
+		}
+		else if (changeTo.find('.') == std::string::npos)
+		{
+			changeTo = changeTo + ".00";
+		}
+	}
+	else if (toChange == "8")
+	{
+		bool valid7 = true;
+		do
+		{
+			for (int i = 0; i < changeTo.length(); i++)
+			{
+				if (!isdigit(changeTo[i]))
+				{
+					std::cout << "Invalid input (Number quantity only)" << std::endl;
+					valid7 = false;
+					break;
+				}
+			}
+			std::getline(std::cin, changeTo);
+		} while (valid7 == false);
+	}
 
 	bookData[stoi(bookChoice)][stoi(toChange) - 1] = changeTo;
 
