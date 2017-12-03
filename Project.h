@@ -47,6 +47,7 @@ public:
 	Inventory();
 	~Inventory() { std::cout << "This is a flag to show an Inventory has been destroyed.\n"; }
 	void inventoryMenu(std::string **&bookData);
+	void listingHeader(); 
 	std::string bookListing(std::string, std::string **&bookData);
 	void addBook(std::string **&bookData);
 	friend void invenFile(std::string **&bookData, int inventorySize);
